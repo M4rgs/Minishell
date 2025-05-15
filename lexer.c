@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tamounir <tamounir@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 20:20:18 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/11 00:49:23 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/05/14 20:46:52 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,13 +66,15 @@ void execute_commands(t_tokenizer *tokenizer, t_infos *infos)
 		waitpid(pid, NULL, 0);
 }
 
-void	it_is_pipe(char **lexxs, t_tokenizer *tokenizer)
+void	it_is_pipe(char *line, t_tokenizer *tokenizer)
 {
-	int	i;
-	int	j;
+	int		i;
+	int		j;
+	char	**lexxs;
 
 	i = 0;
 	j = 0;
+	lexxs = ft_split(line, ' ');
 	while (lexxs[i])
 	{
 		if (strcmp(lexxs[i], "|") == 0)
@@ -105,29 +107,50 @@ int	is_it_token(char **s)
 	return (0);
 }
 
+int	handle_quotes(char *line, t_tokenizer *tokenizer)
+{
+	int		i = 0;
+	int start;
+	int cmd_i = 0;
+
+	while (line[i])
+	{
+		while (line[i] == ' ')
+			i++;
+		if (line[i] == '\'')
+		{
+			start = ++i; 
+			while (line[i] && line[i] != '\'')
+				i++;
+			if (!line[i])
+				return (0);
+			tokenizer->commands[cmd_i++] = strndup(&line[start], i - start);
+			i++;
+		}
+		else if (line[i])
+		{
+			start = i;
+			while (line[i] && line[i] != ' ' && line[i] != '\'')
+				i++;
+			tokenizer->commands[cmd_i++] = strndup(&line[start], i - start);
+		}
+	}
+	tokenizer->commands[cmd_i] = NULL;
+	return (1);
+}
+
 void init_lexer(t_infos *infos, char *line, t_tokenizer *tokenizer)
 {
-	char **lexxs;
-	int i = 0;
+	int len = ft_strlen(line);
 
-	lexxs = ft_split(line, ' ');
-	while (lexxs[i])
-		i++;
-
-	tokenizer->commands = malloc(sizeof(char *) * (i + 1));
-	if (!tokenizer->commands)
+	len = ft_strlen(line);
+	if (ft_strchr(line, '|'))
+		it_is_pipe(line, tokenizer);
+	tokenizer->commands = malloc(sizeof(char *) * (len / 2 + 2));
+	if (handle_quotes(line, tokenizer) == 0)
+	{
+		printf("minishell: syntax error near unexpected quote `\''\n");
 		return ;
-
-	if (is_it_token(lexxs))
-	{
-		it_is_pipe(lexxs, tokenizer);
-	}
-	else
-	{
-		for (int j = 0; j < i; j++)
-			tokenizer->commands[j] = lexxs[j];
-		tokenizer->commands[i] = NULL;
 	}
 	execute_commands(tokenizer, infos);
 }
- 
