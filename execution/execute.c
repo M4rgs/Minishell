@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 12:05:43 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/18 13:00:51 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/05/18 13:58:33 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int	get_env_index(char **env, const char *key)
 	}
 	return (-1);
 }
+
 char	*ft_strjoin3(char *s1, char *s2, char *s3)
 {
 	char	*tmp;
@@ -40,91 +41,113 @@ char	*ft_strjoin3(char *s1, char *s2, char *s3)
 	return (res);
 }
 
-int	add_env_var(char ***env, const char *entry)
+static int	append_env_var(char ***env, char *key, const char *entry, int index)
 {
-	char	**new_env;
-	char	*key;
-	char	*new_value;
 	char	*old_value;
+	char	*new_value;
+
+	old_value = ft_strchr((*env)[index], '=') + 1;
+	new_value = ft_strjoin(old_value, ft_strchr(entry, '=') + 1);
+	free((*env)[index]);
+	(*env)[index] = ft_strjoin3(key, "=", new_value);
+	free(new_value);
+	free(key);
+	return (1);
+}
+
+static char	**expand_env_array(char **env)
+{
 	int		i;
-	int		index;
-	int		append;
+	char	**new_env;
 
-	append = 0;
-	if (ft_strnstr(entry, "+=", ft_strlen(entry)))
-	{
-		append = 1;
-		key = ft_substr(entry, 0, ft_strchr(entry, '+') - entry);
-	}
-	else if (ft_strchr(entry, '='))
-		key = ft_substr(entry, 0, ft_strchr(entry, '=') - entry);
-	else
-		key = ft_strdup(entry);
-	if (!key)
-		return (0);
-
-	index = get_env_index(*env, key);
-
-	// ✅ Case: Append when key exists
-	if (append && index != -1)
-	{
-		old_value = ft_strchr((*env)[index], '=') + 1;
-		new_value = ft_strjoin(old_value, ft_strchr(entry, '=') + 1);
-		free((*env)[index]);
-		(*env)[index] = ft_strjoin3(key, "=", new_value);
-		free(new_value);
-		free(key);
-		return (1);
-	}
-
-	// ✅ Case: Append when key DOESN’T exist — treat as normal assign
-	if (append && index == -1)
-	{
-		char *assign = ft_strjoin3(key, "=", ft_strchr(entry, '=') + 1);
-		free(key);
-		return add_env_var(env, assign); // Recursive call with real assignment
-	}
-
-	// ✅ Key exists: replace or declare
-	if (index != -1)
-	{
-		free((*env)[index]);
-		if (ft_strchr(entry, '='))
-			(*env)[index] = ft_strdup(entry);
-		else
-			(*env)[index] = ft_strjoin(key, "=");
-		free(key);
-		return (1);
-	}
-
-	// ✅ Add new env entry
 	i = 0;
-	while ((*env)[i])
+	while (env[i])
 		i++;
 	new_env = malloc(sizeof(char *) * (i + 2));
 	if (!new_env)
-		return (0);
+		return (NULL);
 	i = 0;
-	while ((*env)[i])
+	while (env[i])
 	{
-		new_env[i] = (*env)[i];
+		new_env[i] = env[i];
 		i++;
 	}
+	new_env[i + 1] = NULL;
+	return (new_env);
+}
+
+static int	create_env_var(char ***env, const char *entry, char *key)
+{
+	char	**new_env;
+	int		i;
+
+	new_env = expand_env_array(*env);
+	if (!new_env)
+	{
+		free(key);
+		return (0);
+	}
+	i = 0;
+	while ((*env)[i])
+		i++;
 	if (ft_strchr(entry, '='))
 		new_env[i] = ft_strdup(entry);
 	else
 	{
+		free(new_env);
 		free(key);
 		return (1);
 	}
-	new_env[i + 1] = NULL;
 	free(*env);
 	*env = new_env;
 	free(key);
 	return (1);
 }
 
+static char	*extract_key(const char *entry, int *append)
+{
+	char	*key;
 
+	*append = 0;
+	if (ft_strnstr(entry, "+=", ft_strlen(entry)))
+	{
+		*append = 1;
+		key = ft_substr(entry, 0, ft_strchr(entry, '+') - entry);
+	}
+	else if (ft_strchr(entry, '='))
+		key = ft_substr(entry, 0, ft_strchr(entry, '=') - entry);
+	else
+		key = ft_strdup(entry);
+	return (key);
+}
+
+int	add_env_var(char ***env, const char *entry)
+{
+	char	*key;
+	int		index;
+	int		append;
+
+	key = extract_key(entry, &append);
+	if (!key)
+		return (0);
+	index = get_env_index(*env, key);
+	if (append && index != -1)
+		return (append_env_var(env, key, entry, index));
+	if (append && index == -1)
+	{
+		char *assign = ft_strjoin3(key, "=", ft_strchr(entry, '=') + 1);
+		free(key);
+		return (add_env_var(env, assign));
+	}
+	if (index != -1)
+	{
+		free((*env)[index]);
+		(*env)[index] = ft_strchr(entry, '=') ? ft_strdup(entry) : ft_strjoin(key, "=");
+		free(key);
+		return (1);
+	}
+	return (create_env_var(env, entry, key));
+}
 
 int	remove_env_var(char ***env, const char *key)
 {
@@ -196,6 +219,20 @@ void	ft_free_split(char **arr)
 	free(arr);
 }
 
+static char	*find_path_env(char **envp)
+{
+	int		i;
+
+	i = 0;
+	while (envp[i])
+	{
+		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
+			return (envp[i] + 5);
+		i++;
+	}
+	return (NULL);
+}
+
 char	*get_command_path(char *cmd, char **envp)
 {
 	char	*path_env;
@@ -204,17 +241,7 @@ char	*get_command_path(char *cmd, char **envp)
 	char	*full_path;
 	int		i;
 
-	i = 0;
-	path_env = NULL;
-	while (envp[i])
-	{
-		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
-		{
-			path_env = envp[i] + 5;
-			break ;
-		}
-		i++;
-	}
+	path_env = find_path_env(envp);
 	if (!path_env)
 		return (NULL);
 	paths = ft_split(path_env, ':');
@@ -268,4 +295,3 @@ void	execute_commands(t_tokenizer *tokenizer, t_infos *infos)
 		waitpid(pid, NULL, 0);
 	free(path);
 }
-
