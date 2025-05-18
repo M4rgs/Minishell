@@ -6,9 +6,9 @@ LIBFT = libft/libft.a
 
 CC = gcc
 
-CFLAGS = -Wall 
+CFLAGS = -Wall #-fsanitize=address
 
-SRC = minishell.c lexer.c
+SRC = minishell.c parsing/tokenizer.c execution/execute.c
 
 OBJ = $(SRC:.c=.o)
 

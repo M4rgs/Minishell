@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 12:27:53 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/11 00:28:24 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/05/18 12:11:39 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	main(int ac, char **av, char **envp)
 			break ;
 		if (*input)
 			add_history(input);
-		init_lexer(&infos, input, &tokenizer);
+		init_tokenizer(&infos, input, &tokenizer);
 		free(input);
 	}
 }

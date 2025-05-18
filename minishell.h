@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tamounir <tamounir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 12:26:53 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/13 05:28:49 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/05/18 12:08:05 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ typedef struct s_infos{
 }	t_infos;
 
 char	*generate_prompt(void);
-void    init_lexer(t_infos *infos, char *line, t_tokenizer *tokenizer);
+void    init_tokenizer(t_infos *infos, char *line, t_tokenizer *tokenizer);
+void 	execute_commands(t_tokenizer *tokenizer, t_infos *infos);
+
 
 #endif
