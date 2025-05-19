@@ -6,11 +6,74 @@
 /*   By: tamounir <tamounir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 20:20:18 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/19 13:12:44 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/05/19 13:29:23 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+char	*get_env_value(char **env, const char *key)
+{
+	int	i;
+	size_t	len;
+
+	len = ft_strlen(key);
+	i = 0;
+	while (env[i])
+	{
+		if (ft_strncmp(env[i], key, len) == 0 && env[i][len] == '=')
+			return (ft_strdup(ft_strchr(env[i], '=') + 1));
+		i++;
+	}
+	return (NULL);
+}
+
+char	*expand_vars_in_string(char *str, char **env)
+{
+	int		i = 0;
+	char	*result = ft_strdup("");
+
+	while (str[i])
+	{
+		if (str[i] == '$' && str[i + 1] && (ft_isalnum(str[i + 1]) || str[i + 1] == '_'))
+		{
+			int		start = ++i;
+			while (str[i] && (ft_isalnum(str[i]) || str[i] == '_'))
+				i++;
+			char *var_name = ft_substr(str, start, i - start);
+			char *value = get_env_value(env, var_name);
+			if (!value)
+				value = ft_strdup("");
+			char *tmp = ft_strjoin(result, value);
+			free(result), free(var_name), free(value);
+			result = tmp;
+		}
+		else
+		{
+			char next[2] = {str[i++], 0};
+			char *tmp = ft_strjoin(result, next);
+			free(result);
+			result = tmp;
+		}
+	}
+	return (result);
+}
+
+
+void	expand_all_tokens(t_tokenizer *tokenizer, char **env)
+{
+	int		i;
+	char	*expanded;
+
+	i = 0;
+	while (tokenizer->commands && tokenizer->commands[i])
+	{
+		expanded = expand_vars_in_string(tokenizer->commands[i], env);
+		free(tokenizer->commands[i]);
+		tokenizer->commands[i] = expanded;
+		i++;
+	}
+}
 
 int	is_whitespace(char c)
 {
@@ -158,8 +221,9 @@ void	init_tokenizer(t_infos *infos, char *line, t_tokenizer *tokenizer)
 {
 	if (!tokenize_line(line, tokenizer))
 		return ;
-	for (int i = 0; tokenizer->commands[i]; i++)
-		printf("cmd[%d] : %s\n", i, tokenizer->commands[i]);
-	// execute_commands(tokenizer, infos);
+	expand_all_tokens(tokenizer, infos->envp_info->env);
+	//for (int i = 0; tokenizer->commands[i]; i++)
+		//printf("cmd[%d] : %s\n", i, tokenizer->commands[i]);
+	 execute_commands(tokenizer, infos);
 	free_tokenizer_commands(tokenizer->commands);
 }
