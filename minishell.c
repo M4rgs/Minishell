@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tamounir <tamounir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 12:27:53 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/19 03:33:19 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/05/19 13:14:04 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,26 @@ void	signal_handling(int sig)
 	}
 }
 
+void	free_env(char **env)
+{
+	int	i = 0;
+
+	if (!env)
+		return;
+	while (env[i])
+		free(env[i++]);
+	free(env);
+}
+
+void	free_infos(t_infos *infos)
+{
+	if (infos->envp_info)
+	{
+		free_env(infos->envp_info->env);
+		free(infos->envp_info);
+	}
+}
+
 int	main(int ac, char **av, char **envp)
 {
 	char	*input;
@@ -95,4 +115,5 @@ int	main(int ac, char **av, char **envp)
 		init_tokenizer(&infos, input, &tokenizer);
 		free(input);
 	}
+	free_infos(&infos);
 }

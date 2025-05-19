@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 20:20:18 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/19 13:07:30 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/05/19 13:12:44 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,9 +83,9 @@ int	handle_syntax_error(char **cmds, int count, char *token)
 {
 	int	i;
 
-	i = 0;
 	if (token)
 		free(token);
+	i = 0;
 	while (i < count)
 	{
 		free(cmds[i]);
@@ -109,7 +109,7 @@ int	process_token(char *line, int *i, int *cmd_i, t_tokenizer *tokenizer)
 
 	token = extract_token(line, i);
 	if (!token)
-		return (handle_syntax_error(tokenizer->commands, *cmd_i, NULL));
+		return (handle_syntax_error(tokenizer->commands, *cmd_i, token));
 	if (is_pipe_token(token))
 	{
 		if (*cmd_i == 0 || !line[*i])
@@ -143,11 +143,23 @@ int	tokenize_line(char *line, t_tokenizer *tokenizer)
 	return (1);
 }
 
+void	free_tokenizer_commands(char **commands)
+{
+	int	i = 0;
+
+	if (!commands)
+		return;
+	while (commands[i])
+		free(commands[i++]);
+	free(commands);
+}
+
 void	init_tokenizer(t_infos *infos, char *line, t_tokenizer *tokenizer)
 {
 	if (!tokenize_line(line, tokenizer))
 		return ;
-	for(int i = 0; tokenizer->commands[i]; i++)
+	for (int i = 0; tokenizer->commands[i]; i++)
 		printf("cmd[%d] : %s\n", i, tokenizer->commands[i]);
-	//execute_commands(tokenizer, infos);
+	// execute_commands(tokenizer, infos);
+	free_tokenizer_commands(tokenizer->commands);
 }
