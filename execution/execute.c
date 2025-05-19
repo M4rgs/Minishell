@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tamounir <tamounir@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 12:05:43 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/18 13:58:33 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/05/19 05:34:22 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	*ft_strjoin3(char *s1, char *s2, char *s3)
 	return (res);
 }
 
-static int	append_env_var(char ***env, char *key, const char *entry, int index)
+int	append_env_var(char ***env, char *key, const char *entry, int index)
 {
 	char	*old_value;
 	char	*new_value;
@@ -55,7 +55,7 @@ static int	append_env_var(char ***env, char *key, const char *entry, int index)
 	return (1);
 }
 
-static char	**expand_env_array(char **env)
+char	**expand_env_array(char **env)
 {
 	int		i;
 	char	**new_env;
@@ -76,7 +76,7 @@ static char	**expand_env_array(char **env)
 	return (new_env);
 }
 
-static int	create_env_var(char ***env, const char *entry, char *key)
+int	create_env_var(char ***env, const char *entry, char *key)
 {
 	char	**new_env;
 	int		i;
@@ -104,7 +104,7 @@ static int	create_env_var(char ***env, const char *entry, char *key)
 	return (1);
 }
 
-static char	*extract_key(const char *entry, int *append)
+char	*extract_key(const char *entry, int *append)
 {
 	char	*key;
 
@@ -143,8 +143,7 @@ int	add_env_var(char ***env, const char *entry)
 	{
 		free((*env)[index]);
 		(*env)[index] = ft_strchr(entry, '=') ? ft_strdup(entry) : ft_strjoin(key, "=");
-		free(key);
-		return (1);
+		return (free(key), 1);
 	}
 	return (create_env_var(env, entry, key));
 }
@@ -219,7 +218,7 @@ void	ft_free_split(char **arr)
 	free(arr);
 }
 
-static char	*find_path_env(char **envp)
+char	*find_path_env(char **envp)
 {
 	int		i;
 

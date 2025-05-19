@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tamounir <tamounir@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 12:26:53 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/18 12:08:05 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/05/19 05:32:35 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@
 
 # define WHITE "\001\033[1;37m\002"
 # define RESET "\001\033[0m\002"
-
+# define PIPE_ERR "minishell: syntax error near unexpected token `|`\n"
+# define QUOTE_ERR "minishell: syntax error near unexpected quote `%c`\n"
 typedef struct s_envinfo{
 	char	**env;
 }	t_envinfo;
