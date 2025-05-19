@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tamounir <tamounir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 20:20:18 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/19 05:33:17 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/05/19 13:07:30 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ char	*extract_quoted_token(char *line, int *i)
 	start = *i;
 	while (line[*i] && line[*i] != quote)
 		(*i)++;
-	if (line[*i] != quote || (*i - start == 0))
+	if (line[*i] != quote)
 	{
 		printf(QUOTE_ERR, quote);
 		return (NULL);
@@ -147,5 +147,7 @@ void	init_tokenizer(t_infos *infos, char *line, t_tokenizer *tokenizer)
 {
 	if (!tokenize_line(line, tokenizer))
 		return ;
-	execute_commands(tokenizer, infos);
+	for(int i = 0; tokenizer->commands[i]; i++)
+		printf("cmd[%d] : %s\n", i, tokenizer->commands[i]);
+	//execute_commands(tokenizer, infos);
 }
