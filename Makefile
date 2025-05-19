@@ -42,7 +42,7 @@ re: fclean all
 git:
 	git add .
 	git commit -m "Minishell"
-	git push
+	git push --force
 
 
 .PHONY: all clean fclean re
