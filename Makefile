@@ -6,7 +6,7 @@ LIBFT = libft/libft.a
 
 CC = gcc
 
-CFLAGS = -Wall -fsanitize=address
+CFLAGS = -Wall -fsanitize=address -g3
 
 SRC = minishell.c parsing/tokenizer.c execution/execute.c
 

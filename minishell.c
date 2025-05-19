@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tamounir <tamounir@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 12:27:53 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/18 12:11:39 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/05/19 03:33:19 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,26 @@ char	**ft_envinit(char **envp)
 	}
 	return (s);
 }
+char	**default_env(t_infos *infos)
+{
+	char	**p;
 
+	p = (char **)malloc(sizeof(char *) * 3); 
+	if (!p)
+		return (NULL);
+	p[0] = ft_strdup("PATH=/usr/local/sbin:/usr/local/bin:/usr/bin:/bin");
+	p[1] = ft_strdup("PWD=/home/tamounir/Desktop/Minishell");
+	p[2] = NULL;
+	return (p);
+}
 void	init_struct(t_infos *infos, char **envp)
 {
-	infos->prom = NULL;
 	infos->envp_info = malloc(sizeof(t_envinfo));
-	infos->envp_info->env = ft_envinit(envp);
+	infos->prom = NULL;
+	if (!envp[0])
+		infos->envp_info->env = default_env(infos);
+	else
+		infos->envp_info->env = ft_envinit(envp);
 }
 
 char	*generate_prompt(void)

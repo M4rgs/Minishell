@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tamounir <tamounir@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 20:20:18 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/18 12:17:19 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/05/19 02:20:12 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,14 @@ int	is_whitespace(char c)
 	return (0);
 }
 
-int	is_pipe_token(const char *token)
+int	is_pipe_token(char *token)
 {
 	if (ft_strcmp(token, "|") == 0)
 		return (1);
 	return (0);
 }
 
-char	*extract_token(const char *line, int *i)
+char	*extract_token(char *line, int *i)
 {
 	int		start;
 	int		len;
@@ -43,12 +43,7 @@ char	*extract_token(const char *line, int *i)
 		while (line[*i] && line[*i] != quote)
 			(*i)++;
 		if (line[*i] != quote)
-		{
-			ft_putstr_fd("minishell: syntax error near unexpected quote `", 2);
-			ft_putchar_fd(quote, 2);
-			ft_putstr_fd("'\n", 2);
-			return (NULL);
-		}
+			return (printf("minishell: syntax error near unexpected quote `%c`\n", quote), NULL);
 		len = *i - start;
 		token = ft_substr(line, start, len);
 		(*i)++;
@@ -97,6 +92,8 @@ int	tokenize_line(char *line, t_tokenizer *tokenizer)
 	i = 0;
 	cmd_i = 0;
 	len = ft_strlen(line);
+	//if (token)
+		//(free(token), token = NULL);
 	tokenizer->commands = malloc(sizeof(char *) * (len + 1));
 	if (!tokenizer->commands)
 		return (0);
@@ -109,7 +106,7 @@ int	tokenize_line(char *line, t_tokenizer *tokenizer)
 		{
 			if (cmd_i == 0 || !line[i])
 			{
-				ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2);
+				ft_putstr_fd("minishell: syntax error near unexpected token `|`\n", 2);
 				return (handle_syntax_error(tokenizer->commands, cmd_i, token));
 			}
 		}
