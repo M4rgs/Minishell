@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 12:05:43 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/20 15:05:49 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/05/20 16:32:31 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,6 @@ char	*get_command_path(char *cmd, char **envp)
 		full_path = ft_strjoin(partial, cmd);
 		if (access(full_path, X_OK) == 0)
 			break ;
-		//free(full_path);
-		//full_path = NULL;
 		i++;
 	}
 	ft_free_split(paths);
@@ -78,11 +76,7 @@ void	execute_commands(t_tokenizer *tokenizer, t_infos *infos)
 	}
 	pid = fork();
 	if (pid == 0)
-	{
 		execve(path, tokenizer->commands, infos->envp_info->env);
-		perror("execve failed");
-		exit(1);
-	}
 	else
 		waitpid(pid, NULL, 0);
 }

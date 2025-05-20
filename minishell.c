@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 12:27:53 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/20 15:11:44 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/05/20 16:35:23 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,20 +20,16 @@ char	**ft_envinit(char **envp)
 	i = 0;
 	while (envp[i])
 		i++;
-	//ft_malloc((void ***)&s, NULL, 1, (sizeof(char *) * (i + 1)));
 	s = ft_malloc((sizeof(char *) * (i + 1)), 1);
 	s[i] = NULL;
 	while (i--)
-	{
 		s[i] = ft_strdup(envp[i]);
-	}
 	return (s);
 }
-char	**default_env(t_infos *infos)
+char	**default_env()
 {
 	char	**p;
 
-	//ft_malloc((void ***)&p, NULL, 1, (sizeof(char *) * 3));
 	p = ft_malloc((sizeof(char *) * 3) ,1);
 	if (!p)
 		return (NULL);
@@ -45,10 +41,9 @@ char	**default_env(t_infos *infos)
 void	init_struct(t_infos *infos, char **envp)
 {
 	infos->envp_info = ft_malloc(sizeof(t_envinfo), 1);
-	//ft_malloc((void ***)&infos->envp_info, NULL, 1, (sizeof(t_envinfo)));
 	infos->prom = NULL;
 	if (!envp[0])
-		infos->envp_info->env = default_env(infos);
+		infos->envp_info->env = default_env();
 	else
 		infos->envp_info->env = ft_envinit(envp);
 }
@@ -64,7 +59,6 @@ char	*generate_prompt(void)
 		usr = "unknown";
 	usr_p = ft_strjoin(usr, "@");
 	promt = ft_strjoin(usr_p, WHITE "Minishell:~$ " RESET);
-	//free(usr_p);
 	return (promt);
 }
 
@@ -81,6 +75,8 @@ void	signal_handling(int sig)
 
 int	main(int ac, char **av, char **envp)
 {
+	(void)ac;
+	(void)av;
 	char	*input;
 	t_infos	infos;
 	t_tokenizer tokenizer;

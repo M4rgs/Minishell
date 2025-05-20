@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 09:30:14 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/20 15:12:20 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/05/20 16:30:52 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ char	**expand_env_array(char **env)
 	i = 0;
 	while (env[i])
 		i++;
-	//ft_malloc((void ***)&new_env, NULL, 1, (sizeof(char *) * (i + 2)));
 	new_env = ft_malloc((sizeof(char *) * (i + 2)), 1);
 	if (!new_env)
 		return (NULL);
@@ -34,31 +33,22 @@ char	**expand_env_array(char **env)
 	return (new_env);
 }
 
-int	create_env_var(char ***env, const char *entry, char *key)
+int	create_env_var(char ***env, const char *entry)
 {
 	char	**new_env;
 	int		i;
 
 	new_env = expand_env_array(*env);
 	if (!new_env)
-	{
-		//free(key);
 		return (0);
-	}
 	i = 0;
 	while ((*env)[i])
 		i++;
 	if (ft_strchr(entry, '='))
 		new_env[i] = ft_strdup(entry);
 	else
-	{
-		//free(new_env);
-		//free(key);
 		return (1);
-	}
-	//free(*env);
 	*env = new_env;
-	//free(key);
 	return (1);
 }
 
@@ -69,10 +59,7 @@ int	append_env_var(char ***env, char *key, const char *entry, int index)
 
 	old_value = ft_strchr((*env)[index], '=') + 1;
 	new_value = ft_strjoin(old_value, ft_strchr(entry, '=') + 1);
-	//free((*env)[index]);
 	(*env)[index] = ft_strjoin3(key, "=", new_value);
-	//free(new_value);
-	//free(key);
 	return (1);
 }
 
@@ -109,17 +96,14 @@ int	add_env_var(char ***env, const char *entry)
 	if (append && index == -1)
 	{
 		assign = ft_strjoin3(key, "=", ft_strchr(entry, '=') + 1);
-		//free(key);
 		return (add_env_var(env, assign));
 	}
 	if (index != -1)
 	{
-		//free((*env)[index]);
 		(*env)[index] = ft_strchr(entry, '=') ? ft_strdup(entry) : ft_strjoin(key, "=");
-		//free(key);
 		return (1);
 	}
-	return (create_env_var(env, entry, key));
+	return (create_env_var(env, entry));
 }
 
 int	builtin_export(t_infos *infos, char **args)

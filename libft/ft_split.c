@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 00:14:26 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/20 15:13:03 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/05/20 16:35:39 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,6 @@ char	**ft_split(const char *s, char c)
 		return (NULL);
 	count = count_words(s, c);
 	result = ft_malloc((sizeof(char *) * (count + 1)), 1);
-	//ft_malloc((void ***)&result, NULL, 1, (sizeof(char *) * (count + 1)));
 	if (!result)
 		return (NULL);
 	i = 0;

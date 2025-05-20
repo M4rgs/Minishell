@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 14:04:25 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/20 15:13:32 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/05/20 16:35:45 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ char	*ft_strdup(const char *s1)
 	char	*dest;
 
 	i = 0;
-	//t_malloc((void ***)&dest, NULL, 1, (ft_strlen(s1) + 1));
 	dest = ft_malloc((ft_strlen(s1) + 1), 1);
 	if (dest == NULL)
 	{

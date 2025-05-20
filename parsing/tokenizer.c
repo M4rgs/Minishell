@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 20:20:18 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/20 15:14:19 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/05/20 16:33:03 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,6 @@ char	*extract_token(char *line, int *i)
 int	init_tokenizer_array(t_tokenizer *tokenizer, int len)
 {
 	tokenizer->commands = ft_malloc((sizeof(char *) * (len + 1)), 1);
-	//ft_malloc((void ***)&tokenizer->commands, NULL, 1, (sizeof(char *) * (len + 1)));
 	if (!tokenizer->commands)
 		return (0);
 	return (1);
@@ -181,7 +180,7 @@ void	init_tokenizer(t_infos *infos, char *line, t_tokenizer *tokenizer)
 	if (!tokenize_line(line, tokenizer))
 		return ;
 	expand_all_tokens(tokenizer, infos->envp_info->env);
-	//for (int i = 0; tokenizer->commands[i]; i++)
-		//printf("cmd[%d] : %s\n", i, tokenizer->commands[i]);
+	for (int i = 0; tokenizer->commands[i]; i++)
+		printf("cmd[%d] : %s\n", i, tokenizer->commands[i]);
 	execute_commands(tokenizer, infos);
 }
