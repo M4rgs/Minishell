@@ -8,7 +8,7 @@ CC = gcc
 
 CFLAGS = -Wall #-fsanitize=address -g3
 
-SRC = minishell.c parsing/tokenizer.c execution/execute.c
+SRC = minishell.c parsing/tokenizer.c execution/execute.c builtins/builtin_export.c builtins/builtin_unset.c help_fun/utils.c
 
 OBJ = $(SRC:.c=.o)
 

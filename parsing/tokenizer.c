@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tamounir <tamounir@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 20:20:18 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/19 13:29:23 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/05/20 09:51:59 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,20 +73,6 @@ void	expand_all_tokens(t_tokenizer *tokenizer, char **env)
 		tokenizer->commands[i] = expanded;
 		i++;
 	}
-}
-
-int	is_whitespace(char c)
-{
-	if (c == ' ' || c == '\t')
-		return (1);
-	return (0);
-}
-
-int	is_pipe_token(char *token)
-{
-	if (ft_strcmp(token, "|") == 0)
-		return (1);
-	return (0);
 }
 
 char	*extract_unquoted_token(char *line, int *i)

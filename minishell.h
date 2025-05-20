@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 12:26:53 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/19 05:32:35 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/05/20 09:51:54 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,11 @@ typedef struct s_infos{
 char	*generate_prompt(void);
 void    init_tokenizer(t_infos *infos, char *line, t_tokenizer *tokenizer);
 void 	execute_commands(t_tokenizer *tokenizer, t_infos *infos);
-
-
+int		builtin_export(t_infos *infos, char **args);
+int		builtin_unset(t_infos *infos, char **args);
+void	ft_free_split(char **arr);
+char	*ft_strjoin3(char *s1, char *s2, char *s3);
+int		get_env_index(char **env, const char *key);
+int	is_whitespace(char c);
+int	is_pipe_token(char *token);
 #endif
