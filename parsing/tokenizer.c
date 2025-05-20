@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 20:20:18 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/20 16:33:03 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/05/20 16:37:44 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,7 +180,5 @@ void	init_tokenizer(t_infos *infos, char *line, t_tokenizer *tokenizer)
 	if (!tokenize_line(line, tokenizer))
 		return ;
 	expand_all_tokens(tokenizer, infos->envp_info->env);
-	for (int i = 0; tokenizer->commands[i]; i++)
-		printf("cmd[%d] : %s\n", i, tokenizer->commands[i]);
 	execute_commands(tokenizer, infos);
 }
