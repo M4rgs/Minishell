@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 20:20:18 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/20 09:51:59 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/05/20 15:14:19 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,12 @@ char	*expand_vars_in_string(char *str, char **env)
 			if (!value)
 				value = ft_strdup("");
 			char *tmp = ft_strjoin(result, value);
-			free(result), free(var_name), free(value);
 			result = tmp;
 		}
 		else
 		{
 			char next[2] = {str[i++], 0};
 			char *tmp = ft_strjoin(result, next);
-			free(result);
 			result = tmp;
 		}
 	}
@@ -69,7 +67,6 @@ void	expand_all_tokens(t_tokenizer *tokenizer, char **env)
 	while (tokenizer->commands && tokenizer->commands[i])
 	{
 		expanded = expand_vars_in_string(tokenizer->commands[i], env);
-		free(tokenizer->commands[i]);
 		tokenizer->commands[i] = expanded;
 		i++;
 	}
@@ -128,25 +125,11 @@ char	*extract_token(char *line, int *i)
 		return (extract_unquoted_token(line, i));
 }
 
-int	handle_syntax_error(char **cmds, int count, char *token)
-{
-	int	i;
-
-	if (token)
-		free(token);
-	i = 0;
-	while (i < count)
-	{
-		free(cmds[i]);
-		i++;
-	}
-	free(cmds);
-	return (0);
-}
 
 int	init_tokenizer_array(t_tokenizer *tokenizer, int len)
 {
-	tokenizer->commands = malloc(sizeof(char *) * (len + 1));
+	tokenizer->commands = ft_malloc((sizeof(char *) * (len + 1)), 1);
+	//ft_malloc((void ***)&tokenizer->commands, NULL, 1, (sizeof(char *) * (len + 1)));
 	if (!tokenizer->commands)
 		return (0);
 	return (1);
@@ -158,13 +141,13 @@ int	process_token(char *line, int *i, int *cmd_i, t_tokenizer *tokenizer)
 
 	token = extract_token(line, i);
 	if (!token)
-		return (handle_syntax_error(tokenizer->commands, *cmd_i, token));
+		return (1);
 	if (is_pipe_token(token))
 	{
 		if (*cmd_i == 0 || !line[*i])
 		{
 			ft_putstr_fd(PIPE_ERR, 2);
-			return (handle_syntax_error(tokenizer->commands, *cmd_i, token));
+			return (1);
 		}
 	}
 	tokenizer->commands[*cmd_i] = token;
@@ -192,16 +175,6 @@ int	tokenize_line(char *line, t_tokenizer *tokenizer)
 	return (1);
 }
 
-void	free_tokenizer_commands(char **commands)
-{
-	int	i = 0;
-
-	if (!commands)
-		return;
-	while (commands[i])
-		free(commands[i++]);
-	free(commands);
-}
 
 void	init_tokenizer(t_infos *infos, char *line, t_tokenizer *tokenizer)
 {
@@ -210,6 +183,5 @@ void	init_tokenizer(t_infos *infos, char *line, t_tokenizer *tokenizer)
 	expand_all_tokens(tokenizer, infos->envp_info->env);
 	//for (int i = 0; tokenizer->commands[i]; i++)
 		//printf("cmd[%d] : %s\n", i, tokenizer->commands[i]);
-	 execute_commands(tokenizer, infos);
-	free_tokenizer_commands(tokenizer->commands);
+	execute_commands(tokenizer, infos);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tamounir <tamounir@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 12:27:53 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/19 13:14:04 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/05/20 15:11:44 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ char	**ft_envinit(char **envp)
 	i = 0;
 	while (envp[i])
 		i++;
-	s = malloc(sizeof(char *) * (i + 1));
+	//ft_malloc((void ***)&s, NULL, 1, (sizeof(char *) * (i + 1)));
+	s = ft_malloc((sizeof(char *) * (i + 1)), 1);
 	s[i] = NULL;
 	while (i--)
 	{
@@ -32,7 +33,8 @@ char	**default_env(t_infos *infos)
 {
 	char	**p;
 
-	p = (char **)malloc(sizeof(char *) * 3); 
+	//ft_malloc((void ***)&p, NULL, 1, (sizeof(char *) * 3));
+	p = ft_malloc((sizeof(char *) * 3) ,1);
 	if (!p)
 		return (NULL);
 	p[0] = ft_strdup("PATH=/usr/local/sbin:/usr/local/bin:/usr/bin:/bin");
@@ -42,7 +44,8 @@ char	**default_env(t_infos *infos)
 }
 void	init_struct(t_infos *infos, char **envp)
 {
-	infos->envp_info = malloc(sizeof(t_envinfo));
+	infos->envp_info = ft_malloc(sizeof(t_envinfo), 1);
+	//ft_malloc((void ***)&infos->envp_info, NULL, 1, (sizeof(t_envinfo)));
 	infos->prom = NULL;
 	if (!envp[0])
 		infos->envp_info->env = default_env(infos);
@@ -61,7 +64,7 @@ char	*generate_prompt(void)
 		usr = "unknown";
 	usr_p = ft_strjoin(usr, "@");
 	promt = ft_strjoin(usr_p, WHITE "Minishell:~$ " RESET);
-	free(usr_p);
+	//free(usr_p);
 	return (promt);
 }
 
@@ -76,26 +79,6 @@ void	signal_handling(int sig)
 	}
 }
 
-void	free_env(char **env)
-{
-	int	i = 0;
-
-	if (!env)
-		return;
-	while (env[i])
-		free(env[i++]);
-	free(env);
-}
-
-void	free_infos(t_infos *infos)
-{
-	if (infos->envp_info)
-	{
-		free_env(infos->envp_info->env);
-		free(infos->envp_info);
-	}
-}
-
 int	main(int ac, char **av, char **envp)
 {
 	char	*input;
@@ -107,13 +90,16 @@ int	main(int ac, char **av, char **envp)
 	{
 		infos.prom = generate_prompt();
 		input = readline(infos.prom);
-		free(infos.prom);
 		if (!input)
 			break ;
+		if (ft_strcmp(input, "exit") == 0)
+		{
+			ft_malloc(0, 0);
+			exit(0);
+		}
 		if (*input)
 			add_history(input);
 		init_tokenizer(&infos, input, &tokenizer);
 		free(input);
 	}
-	free_infos(&infos);
 }

@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 09:35:51 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/20 09:54:02 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/05/20 15:12:43 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ int	remove_env_var(char ***env, const char *key)
 	i = 0;
 	while ((*env)[i])
 		i++;
-	new_env = malloc(sizeof(char *) * i);
+	new_env = ft_malloc((sizeof(char *) * i), 1);
+	//ft_malloc((void ***)&new_env, NULL, 1, (sizeof(char *) * i));
 	if (!new_env)
 		return (0);
 	i = 0;
@@ -34,12 +35,9 @@ int	remove_env_var(char ***env, const char *key)
 	{
 		if (i != index)
 			new_env[j++] = (*env)[i];
-		else
-			free((*env)[i]);
 		i++;
 	}
 	new_env[j] = NULL;
-	free(*env);
 	*env = new_env;
 	return (1);
 }

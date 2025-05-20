@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tamounir <tamounir@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 15:10:42 by tamounir          #+#    #+#             */
-/*   Updated: 2024/11/02 20:37:42 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/05/20 15:09:43 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	else if (!s2)
 		return (ft_strdup(s1));
 	lent = ft_strlen(s1) + ft_strlen(s2) + 1;
-	p = malloc(lent);
+	p = ft_malloc(lent, 1);
 	if (!p)
 		return (NULL);
 	ft_strlcpy(p, s1, lent);

@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 09:30:14 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/20 09:53:43 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/05/20 15:12:20 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ char	**expand_env_array(char **env)
 	i = 0;
 	while (env[i])
 		i++;
-	new_env = malloc(sizeof(char *) * (i + 2));
+	//ft_malloc((void ***)&new_env, NULL, 1, (sizeof(char *) * (i + 2)));
+	new_env = ft_malloc((sizeof(char *) * (i + 2)), 1);
 	if (!new_env)
 		return (NULL);
 	i = 0;
@@ -41,7 +42,7 @@ int	create_env_var(char ***env, const char *entry, char *key)
 	new_env = expand_env_array(*env);
 	if (!new_env)
 	{
-		free(key);
+		//free(key);
 		return (0);
 	}
 	i = 0;
@@ -51,13 +52,13 @@ int	create_env_var(char ***env, const char *entry, char *key)
 		new_env[i] = ft_strdup(entry);
 	else
 	{
-		free(new_env);
-		free(key);
+		//free(new_env);
+		//free(key);
 		return (1);
 	}
-	free(*env);
+	//free(*env);
 	*env = new_env;
-	free(key);
+	//free(key);
 	return (1);
 }
 
@@ -68,10 +69,10 @@ int	append_env_var(char ***env, char *key, const char *entry, int index)
 
 	old_value = ft_strchr((*env)[index], '=') + 1;
 	new_value = ft_strjoin(old_value, ft_strchr(entry, '=') + 1);
-	free((*env)[index]);
+	//free((*env)[index]);
 	(*env)[index] = ft_strjoin3(key, "=", new_value);
-	free(new_value);
-	free(key);
+	//free(new_value);
+	//free(key);
 	return (1);
 }
 
@@ -108,14 +109,15 @@ int	add_env_var(char ***env, const char *entry)
 	if (append && index == -1)
 	{
 		assign = ft_strjoin3(key, "=", ft_strchr(entry, '=') + 1);
-		free(key);
+		//free(key);
 		return (add_env_var(env, assign));
 	}
 	if (index != -1)
 	{
-		free((*env)[index]);
+		//free((*env)[index]);
 		(*env)[index] = ft_strchr(entry, '=') ? ft_strdup(entry) : ft_strjoin(key, "=");
-		return (free(key), 1);
+		//free(key);
+		return (1);
 	}
 	return (create_env_var(env, entry, key));
 }

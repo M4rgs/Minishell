@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 09:31:40 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/20 09:51:43 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/05/20 12:29:51 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ char	*ft_strjoin3(char *s1, char *s2, char *s3)
 	if (!tmp)
 		return (NULL);
 	res = ft_strjoin(tmp, s3);
-	free(tmp);
 	return (res);
 }
 
@@ -34,7 +33,6 @@ void	ft_free_split(char **arr)
 	i = 0;
 	while (arr[i])
 		free(arr[i++]);
-	free(arr);
 }
 
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tamounir <tamounir@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 00:14:26 by tamounir          #+#    #+#             */
-/*   Updated: 2024/11/03 01:30:58 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/05/20 15:13:03 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,8 @@ char	**ft_split(const char *s, char c)
 	if (!s)
 		return (NULL);
 	count = count_words(s, c);
-	result = (char **)malloc(sizeof(char *) * (count + 1));
+	result = ft_malloc((sizeof(char *) * (count + 1)), 1);
+	//ft_malloc((void ***)&result, NULL, 1, (sizeof(char *) * (count + 1)));
 	if (!result)
 		return (NULL);
 	i = 0;

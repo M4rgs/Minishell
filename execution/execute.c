@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 12:05:43 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/20 09:41:18 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/05/20 15:05:49 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,10 @@ char	*get_command_path(char *cmd, char **envp)
 	{
 		partial = ft_strjoin(paths[i], "/");
 		full_path = ft_strjoin(partial, cmd);
-		free(partial);
 		if (access(full_path, X_OK) == 0)
 			break ;
-		free(full_path);
-		full_path = NULL;
+		//free(full_path);
+		//full_path = NULL;
 		i++;
 	}
 	ft_free_split(paths);
@@ -56,7 +55,7 @@ char	*get_command_path(char *cmd, char **envp)
 
 void	execute_commands(t_tokenizer *tokenizer, t_infos *infos)
 {
-	//pid_t	pid;
+	pid_t	pid;
 	char	*path;
 
 	if (!tokenizer->commands || !tokenizer->commands[0])
@@ -77,7 +76,7 @@ void	execute_commands(t_tokenizer *tokenizer, t_infos *infos)
 		printf("minishell: %s: command not found\n", tokenizer->commands[0]);
 		return ;
 	}
-	/*pid = fork();
+	pid = fork();
 	if (pid == 0)
 	{
 		execve(path, tokenizer->commands, infos->envp_info->env);
@@ -85,6 +84,5 @@ void	execute_commands(t_tokenizer *tokenizer, t_infos *infos)
 		exit(1);
 	}
 	else
-		waitpid(pid, NULL, 0);*/
-	free(path);
+		waitpid(pid, NULL, 0);
 }
