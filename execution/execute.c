@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 12:05:43 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/21 14:46:46 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/05/21 15:03:09 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ int	ft_heredoc_init(char **cmds, t_infos *infos, int i)
 			free(input);
 		}
 		close(fd);
-		exit(0);
+		exit(0);	
 	}
 	else
 	{
@@ -133,6 +133,45 @@ int	ft_heredoc_init(char **cmds, t_infos *infos, int i)
 	return (1);
 }
 
+int	run_heredoc_and_execute(char **cmds)
+{
+	int	heredoc_index = -1;
+	for (int i = 0; cmds[i]; i++)
+	{
+		if (ft_strcmp(cmds[i], "<<") == 0)
+		{
+			heredoc_index = i;
+			break;
+		}
+	}
+	if (heredoc_index == -1 || cmds[heredoc_index + 1] == NULL)
+		return (0);
+	ft_heredoc_init(cmds, NULL, heredoc_index);
+	cmds[heredoc_index] = NULL;
+	pid_t pid = fork();
+	if (pid == 0)
+	{
+		int fd = open("/tmp/heredoc.txt", O_RDONLY);
+		if (fd < 0)
+		{
+			perror("open heredoc.txt");
+			exit(1);
+		}
+		dup2(fd, STDIN_FILENO);
+		close(fd);
+		execvp(cmds[0], cmds);
+		perror("execvp failed");
+		exit(1);
+	}
+	else
+	{
+		waitpid(pid, NULL, 0);
+		unlink("/tmp/heredoc.txt");
+	}
+	return (1);
+}
+
+
 int	check_builtings(t_tokenizer *tokenizer, t_infos *infos)
 {
 	int i = 0;
@@ -140,7 +179,7 @@ int	check_builtings(t_tokenizer *tokenizer, t_infos *infos)
 	while (tokenizer->commands[i])
 	{
 		if (ft_strcmp(tokenizer->commands[i], "<<") == 0)
-			return (ft_heredoc_init(tokenizer->commands, infos, i));
+			return (run_heredoc_and_execute(tokenizer->commands));
 		i++;
 	}
 	if (ft_strcmp(tokenizer->commands[0], "export") == 0)
