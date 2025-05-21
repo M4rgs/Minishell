@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 12:05:43 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/21 13:09:58 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/05/21 14:46:46 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,34 +93,43 @@ void	builting_export_only(char **env)
 	}
 }
 
-int	ft_heredoc_ajemi(char **cmds, t_infos *infos, int i)
+int	ft_heredoc_init(char **cmds, t_infos *infos, int i)
 {
 	char	*delimiter;
 	pid_t	pid;
-	int	f = 0;
 	char	*input;
+	int fd;
 
-	if (cmds[i + 1] != NULL)
-		delimiter = cmds[i + 1];
+	if (cmds[i + 1] == NULL)
+		return (0);
+	delimiter = cmds[i + 1];
+	unlink("/tmp/heredoc.txt");
+	fd = open("/tmp/heredoc.txt", O_CREAT | O_WRONLY | O_TRUNC, 0666);
 	pid = fork();
 	if (pid == 0)
 	{
-		while (f == 0)
+		while (1)
 		{
 			input = readline(">> ");
-			if (ft_strcmp(input, delimiter) == 1)
+			if (!input)
+				break;
+			if (ft_strcmp(input, delimiter) == 0)
 			{
-				
+				free(input);
+				break;
 			}
-			else if (ft_strcmp(input, delimiter) == 0)
-			{
-				f = 1;
-				exit(1);
-			}
+			ft_putstr_fd(input, fd);
+			ft_putstr_fd("\n", fd);
+			free(input);
 		}
+		close(fd);
+		exit(0);
 	}
 	else
+	{
 		waitpid(pid, NULL, 0);
+		close(fd);
+	}
 	return (1);
 }
 
@@ -131,7 +140,7 @@ int	check_builtings(t_tokenizer *tokenizer, t_infos *infos)
 	while (tokenizer->commands[i])
 	{
 		if (ft_strcmp(tokenizer->commands[i], "<<") == 0)
-			return (ft_heredoc_ajemi(tokenizer->commands, infos, i));
+			return (ft_heredoc_init(tokenizer->commands, infos, i));
 		i++;
 	}
 	if (ft_strcmp(tokenizer->commands[0], "export") == 0)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tamounir <tamounir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 12:26:53 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/20 12:12:57 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/05/21 14:23:05 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <stdlib.h>
 # include <wait.h>
 # include <signal.h>
+# include <fcntl.h>
 # include <stdio.h>
 # include <string.h>
 # include "readline/readline.h"
