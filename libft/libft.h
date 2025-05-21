@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tamounir <tamounir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 20:55:52 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/20 15:16:50 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/05/21 12:00:46 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 
-#define MAX_ALLOC 100000000
+#define MAX_ALLOC 1000000000
 
 
 int		ft_isalpha(int c);

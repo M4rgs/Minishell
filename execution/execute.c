@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tamounir <tamounir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 12:05:43 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/20 17:08:25 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/05/21 13:09:58 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void	bubble_sort_env(char **env)
 
 	len = 0;
 	j = 0;
+	i = 0;
     while (env[len])
 		len++;
 	while (i < len)
@@ -92,8 +93,47 @@ void	builting_export_only(char **env)
 	}
 }
 
+int	ft_heredoc_ajemi(char **cmds, t_infos *infos, int i)
+{
+	char	*delimiter;
+	pid_t	pid;
+	int	f = 0;
+	char	*input;
+
+	if (cmds[i + 1] != NULL)
+		delimiter = cmds[i + 1];
+	pid = fork();
+	if (pid == 0)
+	{
+		while (f == 0)
+		{
+			input = readline(">> ");
+			if (ft_strcmp(input, delimiter) == 1)
+			{
+				
+			}
+			else if (ft_strcmp(input, delimiter) == 0)
+			{
+				f = 1;
+				exit(1);
+			}
+		}
+	}
+	else
+		waitpid(pid, NULL, 0);
+	return (1);
+}
+
 int	check_builtings(t_tokenizer *tokenizer, t_infos *infos)
 {
+	int i = 0;
+
+	while (tokenizer->commands[i])
+	{
+		if (ft_strcmp(tokenizer->commands[i], "<<") == 0)
+			return (ft_heredoc_ajemi(tokenizer->commands, infos, i));
+		i++;
+	}
 	if (ft_strcmp(tokenizer->commands[0], "export") == 0)
 	{
 		if (tokenizer->commands[1] == NULL)
