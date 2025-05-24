@@ -6,11 +6,25 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 20:20:18 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/20 16:37:44 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/05/24 03:38:51 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int	has_heredoc(char *line)
+{
+	int i;
+
+	i = 0;
+	while (line[i])
+	{
+		if (line[i] == '<' && line[i + 1] == '<')
+			return (1);
+		i++;
+	}
+	return (0);
+}
 
 char	*get_env_value(char **env, const char *key)
 {
@@ -35,7 +49,7 @@ char	*expand_vars_in_string(char *str, char **env)
 
 	while (str[i])
 	{
-		if (str[i] == '$' && str[i + 1] && (ft_isalnum(str[i + 1]) || str[i + 1] == '_'))
+		if (str[i] == '$' && str[i + 1] && (ft_isalnum(str[i + 1]) || str[i + 1] == '_' ))
 		{
 			int		start = ++i;
 			while (str[i] && (ft_isalnum(str[i]) || str[i] == '_'))
@@ -93,61 +107,73 @@ char	*extract_unquoted_token(char *line, int *i)
 	return (token);
 }
 
-char	*extract_quoted_token(char *line, int *i)
+char	*extract_quoted_token(char *line, int *i, t_tokenizer *tokenizer)
 {
 	int		start;
 	int		len;
 	char	quote;
 	char	*token;
 
-	quote = line[(*i)++];
-	start = *i;
-	while (line[*i] && line[*i] != quote)
-		(*i)++;
-	if (line[*i] != quote)
+	if (tokenizer->is_heredoc == 1 && line[*i] == '$' &&
+		(line[*i + 1] == '"' || line[*i + 1] == '\''))
 	{
-		printf(QUOTE_ERR, quote);
-		return (NULL);
+		quote = line[*i + 1];
+		*i += 2;
+		start = *i;
+		while (line[*i] && line[*i] != quote)
+			(*i)++;
+		if (line[*i] != quote)
+		{
+			printf("Syntax error: unmatched %c\n", quote);
+			return (NULL);
+		}
+		len = *i - start;
+		token = ft_substr(line, start, len);
+		(*i)++;
+		return (token);
 	}
-	len = *i - start;
-	token = ft_substr(line, start, len);
-	(*i)++;
-	return (token);
+	if (line[*i] == '\'' || line[*i] == '"')
+	{
+		quote = line[(*i)++];
+		start = *i;
+		while (line[*i] && line[*i] != quote)
+			(*i)++;
+		if (line[*i] != quote)
+		{
+			printf("Syntax error: unmatched %c\n", quote);
+			return (NULL);
+		}
+		len = *i - start;
+		token = ft_substr(line, start, len);
+		(*i)++;
+		return (token);
+	}
+	return (NULL);
 }
 
-char	*extract_token(char *line, int *i)
+char	*extract_token(char *line, int *i, t_tokenizer *tokenizer)
 {
 	while (is_whitespace(line[*i]))
 		(*i)++;
+	if (line[*i] == '$' && (line[*i + 1] == '\'' || line[*i + 1] == '"'))
+		return (extract_quoted_token(line, i, tokenizer));
 	if (line[*i] == '\'' || line[*i] == '"')
-		return (extract_quoted_token(line, i));
-	else
-		return (extract_unquoted_token(line, i));
-}
+		return (extract_quoted_token(line, i, tokenizer));
 
-
-int	init_tokenizer_array(t_tokenizer *tokenizer, int len)
-{
-	tokenizer->commands = ft_malloc((sizeof(char *) * (len + 1)), 1);
-	if (!tokenizer->commands)
-		return (0);
-	return (1);
+	return (extract_unquoted_token(line, i));
 }
 
 int	process_token(char *line, int *i, int *cmd_i, t_tokenizer *tokenizer)
 {
 	char	*token;
 
-	token = extract_token(line, i);
+	token = extract_token(line, i, tokenizer);
 	if (!token)
 		return (1);
-	if (is_pipe_token(token))
+	if (ft_strcmp(token, "|") == 0)
 	{
 		if (*cmd_i == 0 || !line[*i])
-		{
-			ft_putstr_fd(PIPE_ERR, 2);
-			return (1);
-		}
+			return (ft_putstr_fd(PIPE_ERR,2), 1);
 	}
 	tokenizer->commands[*cmd_i] = token;
 	(*cmd_i)++;
@@ -163,7 +189,8 @@ int	tokenize_line(char *line, t_tokenizer *tokenizer)
 	i = 0;
 	cmd_i = 0;
 	len = ft_strlen(line);
-	if (!init_tokenizer_array(tokenizer, len))
+	tokenizer->commands = ft_malloc((sizeof(char *) * (len + 1)), 1);
+	if (!tokenizer->commands)
 		return (0);
 	while (line[i])
 	{
@@ -174,11 +201,13 @@ int	tokenize_line(char *line, t_tokenizer *tokenizer)
 	return (1);
 }
 
-
 void	init_tokenizer(t_infos *infos, char *line, t_tokenizer *tokenizer)
 {
+	if (has_heredoc(line) == 1)
+		tokenizer->is_heredoc = 1;
 	if (!tokenize_line(line, tokenizer))
 		return ;
-	expand_all_tokens(tokenizer, infos->envp_info->env);
+	if (tokenizer->is_heredoc == 1)
+		expand_all_tokens(tokenizer, infos->envp_info->env);
 	execute_commands(tokenizer, infos);
 }

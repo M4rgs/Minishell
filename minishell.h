@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tamounir <tamounir@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 12:26:53 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/21 14:23:05 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/05/24 03:38:43 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ typedef struct s_envinfo{
 
 typedef struct s_tokenizer{
 	char	**commands;
+	int		is_heredoc;
 } t_tokenizer;
 
 

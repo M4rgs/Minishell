@@ -6,104 +6,101 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 09:30:14 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/20 16:30:52 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/05/24 00:47:25 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	**expand_env_array(char **env)
+int	find_env_index(char **env, char *key)
 {
 	int		i;
-	char	**new_env;
+	size_t	len;
 
 	i = 0;
-	while (env[i])
-		i++;
-	new_env = ft_malloc((sizeof(char *) * (i + 2)), 1);
-	if (!new_env)
-		return (NULL);
-	i = 0;
+	len = ft_strlen(key);
 	while (env[i])
 	{
-		new_env[i] = env[i];
+		if (ft_strncmp(env[i], key, len) == 0 && env[i][len] == '=')
+			return (i);
 		i++;
 	}
-	new_env[i + 1] = NULL;
-	return (new_env);
+	return (-1);
 }
 
-int	create_env_var(char ***env, const char *entry)
+int	update_env_entry(char ***env, char *key, char *value, int append)
 {
-	char	**new_env;
+	int		index;
+	char	*old;
+	char	*new_entry;
+	char	*joined;
 	int		i;
+	char	**new_env;
 
-	new_env = expand_env_array(*env);
+	index = find_env_index(*env, key);
+	if (append && index != -1)
+	{
+		old = ft_strchr((*env)[index], '=') + 1;
+		joined = ft_strjoin(old, value);
+		new_entry = ft_strjoin3(key, "=", joined);
+	}
+	else
+		new_entry = ft_strjoin3(key, "=", value);
+	if (index != -1)
+	{
+		(*env)[index] = new_entry;
+		return (1);
+	}
+	i = 0;
+	while ((*env)[i])
+		i++;
+	new_env = ft_malloc(sizeof(char *) * (i + 2), 1);
 	if (!new_env)
 		return (0);
 	i = 0;
 	while ((*env)[i])
+	{
+		new_env[i] = (*env)[i];
 		i++;
-	if (ft_strchr(entry, '='))
-		new_env[i] = ft_strdup(entry);
-	else
-		return (1);
+	}
+	new_env[i] = new_entry;
+	new_env[i + 1] = NULL;
 	*env = new_env;
 	return (1);
 }
 
-int	append_env_var(char ***env, char *key, const char *entry, int index)
-{
-	char	*old_value;
-	char	*new_value;
-
-	old_value = ft_strchr((*env)[index], '=') + 1;
-	new_value = ft_strjoin(old_value, ft_strchr(entry, '=') + 1);
-	(*env)[index] = ft_strjoin3(key, "=", new_value);
-	return (1);
-}
-
-char	*extract_key(const char *entry, int *append)
+int	parse_and_add_export(char ***env, char *arg)
 {
 	char	*key;
-
-	*append = 0;
-	if (ft_strnstr(entry, "+=", ft_strlen(entry)))
-	{
-		*append = 1;
-		key = ft_substr(entry, 0, ft_strchr(entry, '+') - entry);
-	}
-	else if (ft_strchr(entry, '='))
-		key = ft_substr(entry, 0, ft_strchr(entry, '=') - entry);
-	else
-		key = ft_strdup(entry);
-	return (key);
-}
-
-int	add_env_var(char ***env, const char *entry)
-{
-	char	*key;
-	int		index;
+	char	*value;
+	char	*plus_eq;
+	char	*equal;
 	int		append;
-	char	*assign;
 
-	key = extract_key(entry, &append);
-	if (!key)
+	append = 0;
+	key = NULL;
+	value = NULL;
+	plus_eq = ft_strnstr(arg, "+=", ft_strlen(arg));
+	equal = ft_strchr(arg, '=');
+	if (plus_eq)
+	{
+		append = 1;
+		key = ft_substr(arg, 0, plus_eq - arg);
+		value = ft_strdup(plus_eq + 2);
+	}
+	else if (equal)
+	{
+		key = ft_substr(arg, 0, equal - arg);
+		value = ft_strdup(equal + 1);
+	}
+	else
+	{
+		key = ft_strdup(arg);
+		value = ft_strdup("");
+	}
+	if (!key || !value)
 		return (0);
-	index = get_env_index(*env, key);
-	if (append && index != -1)
-		return (append_env_var(env, key, entry, index));
-	if (append && index == -1)
-	{
-		assign = ft_strjoin3(key, "=", ft_strchr(entry, '=') + 1);
-		return (add_env_var(env, assign));
-	}
-	if (index != -1)
-	{
-		(*env)[index] = ft_strchr(entry, '=') ? ft_strdup(entry) : ft_strjoin(key, "=");
-		return (1);
-	}
-	return (create_env_var(env, entry));
+	return (update_env_entry(env, key, value, append));
 }
 
 int	builtin_export(t_infos *infos, char **args)
@@ -113,8 +110,9 @@ int	builtin_export(t_infos *infos, char **args)
 	i = 1;
 	while (args[i])
 	{
-		add_env_var(&infos->envp_info->env, args[i]);
+		if (!parse_and_add_export(&infos->envp_info->env, args[i]))
+			return (0);
 		i++;
 	}
-	return (0);
+	return (1);
 }

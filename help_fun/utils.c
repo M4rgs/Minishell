@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 09:31:40 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/20 12:29:51 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/05/23 20:01:40 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,3 @@ int	is_whitespace(char c)
 	return (0);
 }
 
-int	is_pipe_token(char *token)
-{
-	if (ft_strcmp(token, "|") == 0)
-		return (1);
-	return (0);
-}

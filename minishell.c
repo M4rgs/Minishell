@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 12:27:53 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/20 16:35:23 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/05/24 03:38:38 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ int	main(int ac, char **av, char **envp)
 	char	*input;
 	t_infos	infos;
 	t_tokenizer tokenizer;
+	tokenizer.is_heredoc = 0;
 	signal(SIGINT, signal_handling);
 	init_struct(&infos, envp);
 	while (1)
