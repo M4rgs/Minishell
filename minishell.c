@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 12:27:53 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/24 03:38:38 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/05/24 03:48:13 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,18 +26,7 @@ char	**ft_envinit(char **envp)
 		s[i] = ft_strdup(envp[i]);
 	return (s);
 }
-char	**default_env()
-{
-	char	**p;
 
-	p = ft_malloc((sizeof(char *) * 3) ,1);
-	if (!p)
-		return (NULL);
-	p[0] = ft_strdup("PATH=/usr/local/sbin:/usr/local/bin:/usr/bin:/bin");
-	p[1] = ft_strdup("PWD=/home/tamounir/Desktop/Minishell");
-	p[2] = NULL;
-	return (p);
-}
 void	init_struct(t_infos *infos, char **envp)
 {
 	infos->envp_info = ft_malloc(sizeof(t_envinfo), 1);

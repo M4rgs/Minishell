@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 12:26:53 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/24 03:38:43 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/05/24 03:53:20 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,11 @@ char	*ft_strjoin3(char *s1, char *s2, char *s3);
 int		get_env_index(char **env, const char *key);
 int		is_whitespace(char c);
 int		is_pipe_token(char *token);
+int		has_heredoc(char *line);
+char	*extract_token(char *line, int *i, t_tokenizer *tokenizer);
+char	*get_env_value(char **env, const char *key);
+char	*extract_quoted_token(char *line, int *i, t_tokenizer *tokenizer);
+char	*extract_unquoted_token(char *line, int *i);
+char	**default_env();
+char	*get_env_value(char **env, const char *key);
 #endif
