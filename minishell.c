@@ -6,12 +6,12 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 12:27:53 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/24 03:48:13 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/05/24 04:22:17 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
+int g_last_exit_status = 0;
 char	**ft_envinit(char **envp)
 {
 	int		i;

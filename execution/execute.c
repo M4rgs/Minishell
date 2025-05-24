@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 12:05:43 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/23 21:23:43 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/05/24 04:25:55 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -243,6 +243,7 @@ void	execute_commands(t_tokenizer *tokenizer, t_infos *infos)
 {
 	pid_t	pid;
 	char	*path;
+	int	status;
 
 	if (!tokenizer->commands || !tokenizer->commands[0])
 		return ;
@@ -264,5 +265,10 @@ void	execute_commands(t_tokenizer *tokenizer, t_infos *infos)
 		exit(1);
 	}
 	else
+	{
+		waitpid(pid, &status, 0);
+		if (WIFEXITED(status))
+			g_last_exit_status = WEXITSTATUS(status);
 		waitpid(pid, NULL, 0);
+	}
 }

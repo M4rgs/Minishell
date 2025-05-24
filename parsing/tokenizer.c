@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 20:20:18 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/24 03:52:08 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/05/24 04:24:50 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ char	*expand_vars_in_string(char *str, char **env)
 {
 	int		i = 0;
 	char	*result = ft_strdup("");
+	char *var_name;
 
 	while (str[i])
 	{
@@ -24,7 +25,7 @@ char	*expand_vars_in_string(char *str, char **env)
 			int		start = ++i;
 			while (str[i] && (ft_isalnum(str[i]) || str[i] == '_'))
 				i++;
-			char *var_name = ft_substr(str, start, i - start);
+			var_name = ft_substr(str, start, i - start);
 			char *value = get_env_value(env, var_name);
 			if (!value)
 				value = ft_strdup("");
@@ -38,6 +39,8 @@ char	*expand_vars_in_string(char *str, char **env)
 			result = tmp;
 		}
 	}
+	if (ft_strncmp(var_name, "?", 1) == 0)
+			return ft_itoa(g_last_exit_status);
 	return (result);
 }
 

@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 12:26:53 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/24 03:53:20 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/05/24 04:22:29 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ typedef struct s_infos{
 	t_envinfo	*envp_info;
 	char		*prom;
 }	t_infos;
-
+extern int g_last_exit_status;
 char	*generate_prompt(void);
 void    init_tokenizer(t_infos *infos, char *line, t_tokenizer *tokenizer);
 void 	execute_commands(t_tokenizer *tokenizer, t_infos *infos);
