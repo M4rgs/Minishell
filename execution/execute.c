@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 12:05:43 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/24 04:25:55 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/05/24 16:37:28 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,7 +170,6 @@ int	run_heredoc_and_execute(char **cmds)
 	}
 	return (1);
 }
-
 
 int	check_builtings(t_tokenizer *tokenizer, t_infos *infos)
 {
