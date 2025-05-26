@@ -8,7 +8,7 @@ CC = gcc
 
 CFLAGS = -Wall #-fsanitize=address -g3
 
-SRC = minishell.c parsing/tokenizer.c execution/execute.c builtins/builtin_export.c builtins/builtin_unset.c help_fun/utils.c help_fun/utils2.c parsing/quoted_unquoted.c
+SRC = minishell.c parsing/tokenizer.c execution/execute.c builtins/builtin_export.c builtins/builtin_unset.c help_fun/utils.c help_fun/utils2.c parsing/quoted_unquoted.c execution/export_only.c execution/exec_utils.c execution/heredoc.c
 
 OBJ = $(SRC:.c=.o)
 
@@ -38,11 +38,5 @@ fclean: clean
 	@rm -rf readline-8.2 readline-8.2.tar.gz
 
 re: fclean all
-
-git:
-	git add .
-	git commit -m "Minishell"
-	git push --force
-
 
 .PHONY: all clean fclean re

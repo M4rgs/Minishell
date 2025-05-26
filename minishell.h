@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tamounir <tamounir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 12:26:53 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/24 04:22:29 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/05/26 14:32:30 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,9 @@ typedef struct s_infos{
 	t_envinfo	*envp_info;
 	char		*prom;
 }	t_infos;
+
 extern int g_last_exit_status;
+
 char	*generate_prompt(void);
 void    init_tokenizer(t_infos *infos, char *line, t_tokenizer *tokenizer);
 void 	execute_commands(t_tokenizer *tokenizer, t_infos *infos);
@@ -60,4 +62,7 @@ char	*extract_quoted_token(char *line, int *i, t_tokenizer *tokenizer);
 char	*extract_unquoted_token(char *line, int *i);
 char	**default_env();
 char	*get_env_value(char **env, const char *key);
+int		run_heredoc_and_execute(char **cmds);
+void	builting_export_only(char **env);
+char	*find_path_env(char **envp);
 #endif
