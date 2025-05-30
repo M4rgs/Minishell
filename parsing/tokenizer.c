@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 20:20:18 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/24 04:24:50 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/05/30 13:18:48 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ void	init_tokenizer(t_infos *infos, char *line, t_tokenizer *tokenizer)
 		tokenizer->is_heredoc = 1;
 	if (!tokenize_line(line, tokenizer))
 		return ;
-	if (tokenizer->is_heredoc == 1)
+	if (tokenizer->is_heredoc == 0)
 		expand_all_tokens(tokenizer, infos->envp_info->env);
 	execute_commands(tokenizer, infos);
 }
