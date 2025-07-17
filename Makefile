@@ -6,9 +6,9 @@ LIBFT = libft/libft.a
 
 CC = gcc
 
-CFLAGS = -Wall #-fsanitize=address -g3
+CFLAGS = -Wall -fsanitize=address -g3
 
-SRC = minishell.c parsing/tokenizer.c execution/execute.c builtins/builtin_export.c builtins/builtin_unset.c help_fun/utils.c help_fun/utils2.c parsing/quoted_unquoted.c execution/export_only.c execution/exec_utils.c execution/heredoc.c
+SRC = minishell.c parsing/tokenizer.c execution/execute.c builtins/builtin_export.c builtins/builtin_unset.c help_fun/utils.c help_fun/utils2.c parsing/quoted_unquoted.c execution/export_only.c execution/exec_utils.c execution/heredoc.c parsing/expanding.c
 
 OBJ = $(SRC:.c=.o)
 

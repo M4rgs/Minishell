@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 14:27:39 by tamounir          #+#    #+#             */
-/*   Updated: 2025/07/17 03:39:47 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/07/17 04:28:09 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ char **extract_heredoc_infs(char **cmds, char **out_delimiter, char *file)
 			count++;
 		i++;
 	}
-	new_cmds = ft_malloc(sizeof(char *) * (count - 1), 1);
+	new_cmds = ft_malloc(sizeof(char *) * (count + 1), 1);
 	i = 0;
 	while (cmds[i])
 	{
@@ -143,6 +143,6 @@ int	ft_heredoc_init(char **cmds, t_infos *infos)
 	if (!heredoc_input(delimiter, file))
 		return (0);
 	execute__heredoc(new_cmds, path, infos->envp_info->env, file);
-	free(new_cmds);
+	//free(new_cmds);
 	return (1);
 }
