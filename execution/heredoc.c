@@ -6,13 +6,13 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 14:27:39 by tamounir          #+#    #+#             */
-/*   Updated: 2025/07/17 00:57:49 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/07/17 03:39:47 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	execute__heredoc(char **new_cmds, char *path, char **envp)
+int	execute__heredoc(char **new_cmds, char *path, char **envp, char *file)
 {
 	pid_t	pid;
 	int		fd;
@@ -21,7 +21,7 @@ int	execute__heredoc(char **new_cmds, char *path, char **envp)
 	pid = fork();
 	if (pid == 0)
 	{
-		fd = open("/tmp/heredoc.txt", O_RDONLY);
+		fd = open(file, O_RDONLY);
 		dup2(fd, STDIN_FILENO);
 		close(fd);
 		execve(path, new_cmds, envp);
@@ -36,7 +36,7 @@ int	execute__heredoc(char **new_cmds, char *path, char **envp)
 	return (0);
 }
 
-char **extract_heredoc_infs(char **cmds, char **out_delimiter)
+char **extract_heredoc_infs(char **cmds, char **out_delimiter, char *file)
 {
 	int		i = 0;
 	int		j = 0;
@@ -76,14 +76,14 @@ char **extract_heredoc_infs(char **cmds, char **out_delimiter)
 	return (new_cmds);
 }
 
-int	heredoc_input(char *delimiter)
+int	heredoc_input(char *delimiter, char *file)
 {
 	char	*input;
 	int		fd;
 	pid_t	pid;
 
-	unlink("/tmp/heredoc.txt");
-	fd = open("/tmp/heredoc.txt", O_CREAT | O_WRONLY | O_TRUNC, 0666);
+	unlink(file);
+	fd = open(file, O_CREAT | O_WRONLY | O_TRUNC, 0666);
 	if (fd == -1)
 	{
 		perror("open");
@@ -131,13 +131,18 @@ int	ft_heredoc_init(char **cmds, t_infos *infos)
 	char	**new_cmds;
 	char	*path;
 
-	new_cmds = extract_heredoc_infs(cmds, &delimiter);
+	char	*file;
+	char *ito_file;
+
+	ito_file = ft_itoa(rand());
+	file = ft_strjoin("/tmp/", ito_file);
+	new_cmds = extract_heredoc_infs(cmds, &delimiter, file);
 	if (!new_cmds)
 		return (0);
 	path = get_command_path(new_cmds[0], infos->envp_info->env);
-	if (!heredoc_input(delimiter))
+	if (!heredoc_input(delimiter, file))
 		return (0);
-	execute__heredoc(new_cmds, path, infos->envp_info->env);
+	execute__heredoc(new_cmds, path, infos->envp_info->env, file);
 	free(new_cmds);
 	return (1);
 }
