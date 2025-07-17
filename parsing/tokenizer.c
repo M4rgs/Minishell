@@ -6,43 +6,70 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 20:20:18 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/30 13:18:48 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/07/17 03:29:40 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+
+char	*exit_status_expanding(char *rzlt, int *i)
+{
+	char	*exit_string;
+	char	*tmp;
+
+	exit_string = ft_itoa(g_last_exit_status);
+	tmp = ft_strjoin(rzlt, exit_string);
+	return (tmp);
+	(*i)++;
+}
 char	*expand_vars_in_string(char *str, char **env)
 {
 	int		i = 0;
 	char	*result = ft_strdup("");
-	char *var_name;
-
 	while (str[i])
 	{
-		if (str[i] == '$' && str[i + 1] && (ft_isalnum(str[i + 1]) || str[i + 1] == '_' ))
+		if (str[i] == '$')
 		{
-			int		start = ++i;
-			while (str[i] && (ft_isalnum(str[i]) || str[i] == '_'))
-				i++;
-			var_name = ft_substr(str, start, i - start);
-			char *value = get_env_value(env, var_name);
-			if (!value)
-				value = ft_strdup("");
-			char *tmp = ft_strjoin(result, value);
-			result = tmp;
+			i++;
+			if (str[i] == '?')
+				result = exit_status_expanding(result, &i);
+			else if (str[i] && (ft_isalnum(str[i]) || str[i] == '_'))
+			{
+				int start = i;
+				while (str[i] && (ft_isalnum(str[i]) || str[i] == '_'))
+					i++;
+				char *var_name = ft_substr(str, start, i - start);
+				char *value = get_env_value(env, var_name);
+				free(var_name);
+				if (!value)
+					value = ft_strdup("");
+				char *tmp = ft_strjoin(result, value);
+				free(result);
+				if (value != NULL && value != (char *)"")
+					free(value);
+				result = tmp;
+			}
+			else
+			{
+				char next[2] = {'$', 0};
+				char *tmp = ft_strjoin(result, next);
+				free(result);
+				result = tmp;
+			}
 		}
 		else
 		{
-			char next[2] = {str[i++], 0};
+			char next[2] = {str[i], 0};
 			char *tmp = ft_strjoin(result, next);
+			free(result);
 			result = tmp;
+			i++;
 		}
 	}
-	if (ft_strncmp(var_name, "?", 1) == 0)
-			return ft_itoa(g_last_exit_status);
-	return (result);
+	return result;
 }
+
 
 void	expand_all_tokens(t_tokenizer *tokenizer, char **env)
 {

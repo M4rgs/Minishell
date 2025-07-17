@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tamounir <tamounir@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 12:05:43 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/26 14:29:55 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/07/16 23:01:31 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	check_builtings(t_tokenizer *tokenizer, t_infos *infos)
 	while (tokenizer->commands[i])
 	{
 		if (ft_strcmp(tokenizer->commands[i], "<<") == 0)
-			return (run_heredoc_and_execute(tokenizer->commands));
+			return (ft_heredoc_init(tokenizer->commands, infos));
 		i++;
 	}
 	if (ft_strcmp(tokenizer->commands[0], "export") == 0)

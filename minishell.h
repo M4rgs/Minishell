@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tamounir <tamounir@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 12:26:53 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/26 14:32:30 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/07/16 22:55:03 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # include "libft/libft.h"
 # include <unistd.h>
 # include <stdlib.h>
-# include <wait.h>
 # include <signal.h>
 # include <fcntl.h>
 # include <stdio.h>
@@ -65,4 +64,6 @@ char	*get_env_value(char **env, const char *key);
 int		run_heredoc_and_execute(char **cmds);
 void	builting_export_only(char **env);
 char	*find_path_env(char **envp);
+int	ft_heredoc_init(char **cmds, t_infos *infos);
+char	*get_command_path(char *cmd, char **envp);
 #endif

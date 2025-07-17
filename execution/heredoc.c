@@ -3,28 +3,101 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tamounir <tamounir@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 14:27:39 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/26 14:27:52 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/07/17 00:57:49 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	ft_heredoc_init(char **cmds, t_infos *infos, int i)
+int	execute__heredoc(char **new_cmds, char *path, char **envp)
 {
-	char	*delimiter;
 	pid_t	pid;
-	char	*input;
-	int fd;
+	int		fd;
+	int		status;
 
-	if (cmds[i + 1] == NULL)
-		return (0);
-	delimiter = cmds[i + 1];
+	pid = fork();
+	if (pid == 0)
+	{
+		fd = open("/tmp/heredoc.txt", O_RDONLY);
+		dup2(fd, STDIN_FILENO);
+		close(fd);
+		execve(path, new_cmds, envp);
+		exit(1);
+	}
+	else
+	{
+		waitpid(pid, &status, 0);
+		if (WIFEXITED(status))
+			g_last_exit_status = WEXITSTATUS(status);
+	}
+	return (0);
+}
+
+char **extract_heredoc_infs(char **cmds, char **out_delimiter)
+{
+	int		i = 0;
+	int		j = 0;
+	int		heredoc_index = -1;
+	char	**new_cmds;
+	int count;
+
+	count = 0;
+	while (cmds[i])
+	{
+		if (ft_strcmp(cmds[i], "<<") == 0)
+		{
+			heredoc_index = i;
+			break;
+		}
+		i++;
+	}
+	if (heredoc_index == -1 || cmds[heredoc_index + 1] == NULL)
+		return (NULL);
+	*out_delimiter = cmds[heredoc_index + 1];
+	i = 0;
+	while (cmds[i])
+	{
+		if (i != heredoc_index && i != heredoc_index + 1)
+			count++;
+		i++;
+	}
+	new_cmds = ft_malloc(sizeof(char *) * (count - 1), 1);
+	i = 0;
+	while (cmds[i])
+	{
+		if (i != heredoc_index && i != heredoc_index + 1)
+			new_cmds[j++] = cmds[i];
+		i++;
+	}
+	new_cmds[j] = NULL;
+	return (new_cmds);
+}
+
+int	heredoc_input(char *delimiter)
+{
+	char	*input;
+	int		fd;
+	pid_t	pid;
+
 	unlink("/tmp/heredoc.txt");
 	fd = open("/tmp/heredoc.txt", O_CREAT | O_WRONLY | O_TRUNC, 0666);
+	if (fd == -1)
+	{
+		perror("open");
+		return (0);
+	}
+
 	pid = fork();
+	if (pid == -1)
+	{
+		perror("fork");
+		close(fd);
+		return (0);
+	}
+
 	if (pid == 0)
 	{
 		while (1)
@@ -42,7 +115,7 @@ int	ft_heredoc_init(char **cmds, t_infos *infos, int i)
 			free(input);
 		}
 		close(fd);
-		exit(0);	
+		exit(0);
 	}
 	else
 	{
@@ -52,40 +125,19 @@ int	ft_heredoc_init(char **cmds, t_infos *infos, int i)
 	return (1);
 }
 
-int	run_heredoc_and_execute(char **cmds)
+int	ft_heredoc_init(char **cmds, t_infos *infos)
 {
-	int	heredoc_index = -1;
-	for (int i = 0; cmds[i]; i++)
-	{
-		if (ft_strcmp(cmds[i], "<<") == 0)
-		{
-			heredoc_index = i;
-			break;
-		}
-	}
-	if (heredoc_index == -1 || cmds[heredoc_index + 1] == NULL)
+	char	*delimiter;
+	char	**new_cmds;
+	char	*path;
+
+	new_cmds = extract_heredoc_infs(cmds, &delimiter);
+	if (!new_cmds)
 		return (0);
-	ft_heredoc_init(cmds, NULL, heredoc_index);
-	cmds[heredoc_index] = NULL;
-	pid_t pid = fork();
-	if (pid == 0)
-	{
-		int fd = open("/tmp/heredoc.txt", O_RDONLY);
-		if (fd < 0)
-		{
-			perror("open heredoc.txt");
-			exit(1);
-		}
-		dup2(fd, STDIN_FILENO);
-		close(fd);
-		execvp(cmds[0], cmds);
-		perror("execvp failed");
-		exit(1);
-	}
-	else
-	{
-		waitpid(pid, NULL, 0);
-		unlink("/tmp/heredoc.txt");
-	}
+	path = get_command_path(new_cmds[0], infos->envp_info->env);
+	if (!heredoc_input(delimiter))
+		return (0);
+	execute__heredoc(new_cmds, path, infos->envp_info->env);
+	free(new_cmds);
 	return (1);
 }

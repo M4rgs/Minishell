@@ -1,4 +1,4 @@
-prefix=/home/tamounir/Desktop/Minishell/readline
+prefix=/mnt/homes/tamounir/Desktop/Minishell/readline
 exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 includedir=${prefix}/include
