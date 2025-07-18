@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 04:18:09 by tamounir          #+#    #+#             */
-/*   Updated: 2025/07/17 04:21:20 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/07/17 04:30:34 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char *exit_status_expanding(char *rzlt, int *i)
 	char	*exit_string = ft_itoa(g_last_exit_status);
 	char	*tmp = ft_strjoin(rzlt, exit_string);
 	(*i)++;
-	return tmp;
+	return (tmp);
 }
 
 char *expand_env_var(const char *str, int *i_ptr, char **env, char *result)

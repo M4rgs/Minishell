@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 14:27:39 by tamounir          #+#    #+#             */
-/*   Updated: 2025/07/17 04:28:09 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/07/17 04:30:40 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,5 @@ int	ft_heredoc_init(char **cmds, t_infos *infos)
 	if (!heredoc_input(delimiter, file))
 		return (0);
 	execute__heredoc(new_cmds, path, infos->envp_info->env, file);
-	//free(new_cmds);
 	return (1);
 }

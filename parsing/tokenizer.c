@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 20:20:18 by tamounir          #+#    #+#             */
-/*   Updated: 2025/07/17 04:18:35 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/07/18 03:45:49 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	process_token(char *line, int *i, int *cmd_i, t_tokenizer *tokenizer)
 	}
 	tokenizer->commands[*cmd_i] = token;
 	(*cmd_i)++;
-	return (1);
+	return (0);
 }
 
 int	tokenize_line(char *line, t_tokenizer *tokenizer)
@@ -43,7 +43,11 @@ int	tokenize_line(char *line, t_tokenizer *tokenizer)
 		return (0);
 	while (line[i])
 	{
-		if (!process_token(line, &i, &cmd_i, tokenizer))
+		while (line[i] && is_whitespace(line[i]))
+		i++;
+		if (!line[i])
+			break;
+		if (process_token(line, &i, &cmd_i, tokenizer) == 1)
 			return (0);
 	}
 	tokenizer->commands[cmd_i] = NULL;

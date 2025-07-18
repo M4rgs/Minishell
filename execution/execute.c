@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 12:05:43 by tamounir          #+#    #+#             */
-/*   Updated: 2025/07/16 23:01:31 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/07/18 03:40:44 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ char	*get_command_path(char *cmd, char **envp)
 		full_path = ft_strjoin(partial, cmd);
 		if (access(full_path, X_OK) == 0)
 			break ;
+		full_path = NULL;
 		i++;
 	}
 	ft_free_split(paths);
@@ -79,6 +80,7 @@ void	execute_commands(t_tokenizer *tokenizer, t_infos *infos)
 	if (!path)
 	{
 		printf("minishell: %s: command not found\n", tokenizer->commands[0]);
+		g_last_exit_status = 127;
 		return ;
 	}
 	pid = fork();
@@ -87,7 +89,7 @@ void	execute_commands(t_tokenizer *tokenizer, t_infos *infos)
 	else if (pid == 0)
 	{
 		execve(path, tokenizer->commands, infos->envp_info->env);
-		perror(tokenizer->commands[0]);
+		perror("Minishell");
 		exit(1);
 	}
 	else
@@ -95,6 +97,5 @@ void	execute_commands(t_tokenizer *tokenizer, t_infos *infos)
 		waitpid(pid, &status, 0);
 		if (WIFEXITED(status))
 			g_last_exit_status = WEXITSTATUS(status);
-		waitpid(pid, NULL, 0);
 	}
 }
