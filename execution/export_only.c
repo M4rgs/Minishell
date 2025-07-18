@@ -3,42 +3,43 @@
 /*                                                        :::      ::::::::   */
 /*   export_only.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tamounir <tamounir@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 14:29:59 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/26 14:30:13 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/07/18 23:14:19 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char **copy_env(char **env)
+char	**copy_env(char **env)
 {
-    int i;
-	int	j;
+	int		i;
+	int		j;
+	char	**copy;
 
 	i = 0;
 	j = 0;
-    while (env[i]) 
+	while (env[i])
 		i++;
-    char **copy = ft_malloc(sizeof(char *) * (i + 1), 1);
-    if (!copy)
-		return NULL;
+	copy = ft_malloc(sizeof(char *) * (i + 1), 1);
+	if (!copy)
+		return (NULL);
 	while (j < i)
 	{
 		copy[j] = ft_strdup(env[j]);
 		j++;
 	}
 	copy[j] = NULL;
-    return copy;
+	return (copy);
 }
 
 void	join_declare(char **env)
 {
-	int	i;
+	int		i;
+	char	*tmp;
 
 	i = 0;
-	char *tmp;
 	while (env[i])
 	{
 		tmp = env[i];
@@ -49,15 +50,15 @@ void	join_declare(char **env)
 
 void	bubble_sort_env(char **env)
 {
-    int i;
-	int	j;
-    char *temp;
-    int len;
+	int		i;
+	int		j;
+	char	*temp;
+	int		len;
 
 	len = 0;
 	j = 0;
 	i = 0;
-    while (env[len])
+	while (env[len])
 		len++;
 	while (i < len)
 	{
@@ -78,11 +79,10 @@ void	bubble_sort_env(char **env)
 
 void	builting_export_only(char **env)
 {
-	int	i;
+	int		i;
+	char	**temp_env;
 
 	i = 0;
-	char	**temp_env;
-	
 	temp_env = copy_env(env);
 	bubble_sort_env(temp_env);
 	join_declare(temp_env);

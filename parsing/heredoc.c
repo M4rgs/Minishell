@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 14:27:39 by tamounir          #+#    #+#             */
-/*   Updated: 2025/07/17 04:30:40 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/07/18 23:17:52 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,6 @@ int	ft_heredoc_init(char **cmds, t_infos *infos)
 	char	*delimiter;
 	char	**new_cmds;
 	char	*path;
-
 	char	*file;
 	char *ito_file;
 

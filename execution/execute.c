@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 12:05:43 by tamounir          #+#    #+#             */
-/*   Updated: 2025/07/18 03:40:44 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/07/18 23:10:55 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 
 int	check_builtings(t_tokenizer *tokenizer, t_infos *infos)
 {
-	int i = 0;
+	int	i;
 
+	i = 0;
 	while (tokenizer->commands[i])
 	{
 		if (ft_strcmp(tokenizer->commands[i], "<<") == 0)
@@ -35,7 +36,7 @@ int	check_builtings(t_tokenizer *tokenizer, t_infos *infos)
 	else if (ft_strcmp(tokenizer->commands[0], "unset") == 0)
 	{
 		builtin_unset(infos, tokenizer->commands);
-		return(1);
+		return (1);
 	}
 	return (0);
 }
@@ -70,7 +71,7 @@ void	execute_commands(t_tokenizer *tokenizer, t_infos *infos)
 {
 	pid_t	pid;
 	char	*path;
-	int	status;
+	int		status;
 
 	if (!tokenizer->commands || !tokenizer->commands[0])
 		return ;

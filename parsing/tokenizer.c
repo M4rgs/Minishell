@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 20:20:18 by tamounir          #+#    #+#             */
-/*   Updated: 2025/07/18 03:45:49 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/07/18 23:18:48 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,10 @@ int	process_token(char *line, int *i, int *cmd_i, t_tokenizer *tokenizer)
 	if (ft_strcmp(token, "|") == 0)
 	{
 		if (*cmd_i == 0 || !line[*i])
+		{
+			g_last_exit_status = 258;
 			return (ft_putstr_fd(PIPE_ERR, 2), 1);
+		}
 	}
 	tokenizer->commands[*cmd_i] = token;
 	(*cmd_i)++;
@@ -44,9 +47,9 @@ int	tokenize_line(char *line, t_tokenizer *tokenizer)
 	while (line[i])
 	{
 		while (line[i] && is_whitespace(line[i]))
-		i++;
+			i++;
 		if (!line[i])
-			break;
+			break ;
 		if (process_token(line, &i, &cmd_i, tokenizer) == 1)
 			return (0);
 	}
@@ -56,6 +59,12 @@ int	tokenize_line(char *line, t_tokenizer *tokenizer)
 
 void	init_tokenizer(t_infos *infos, char *line, t_tokenizer *tokenizer)
 {
+	if (ft_strcmp(line, ".") == 0)
+	{
+		printf("bash: .: filename argument required\n.: usage: . filename [arguments]\n");
+		g_last_exit_status = 2;
+		return ;
+	}
 	if (has_heredoc(line) == 1)
 		tokenizer->is_heredoc = 1;
 	if (!tokenize_line(line, tokenizer))

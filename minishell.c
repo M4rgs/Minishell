@@ -6,13 +6,13 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 12:27:53 by tamounir          #+#    #+#             */
-/*   Updated: 2025/07/18 03:28:25 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/07/18 23:20:37 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int g_last_exit_status = 0;
+int	g_last_exit_status = 0;
 
 char	**ft_envinit(char **envp)
 {
@@ -66,11 +66,12 @@ void	signal_handling(int sig)
 
 int	main(int ac, char **av, char **envp)
 {
+	char		*input;
+	t_infos		infos;
+	t_tokenizer	tokenizer;
+
 	(void)ac;
 	(void)av;
-	char	*input;
-	t_infos	infos;
-	t_tokenizer tokenizer;
 	tokenizer.is_heredoc = 0;
 	signal(SIGINT, signal_handling);
 	init_struct(&infos, envp);

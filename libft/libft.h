@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 20:55:52 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/23 19:11:55 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/07/18 23:15:22 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,7 @@
 # include <limits.h>
 # include <unistd.h>
 
-#define MAX_ALLOC 500000
-
+# define MAX_ALLOC 500000
 
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);
@@ -37,7 +36,7 @@ char	*ft_strdup(const char *s1);
 char	*ft_strnstr(const char *haystack, const char *needle, size_t len);
 int		ft_strcmp(const char *s1, const char *s2);
 char	*ft_strchr(const char *s, int c);
-int     ft_strncmp(const char *s1, const char *s2, size_t n);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_strrchr(const char *s, int c);
 size_t	ft_strlen(const char *s);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
