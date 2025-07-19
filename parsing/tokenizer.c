@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 20:20:18 by tamounir          #+#    #+#             */
-/*   Updated: 2025/07/18 23:18:48 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/07/19 02:49:09 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,21 @@
 int	process_token(char *line, int *i, int *cmd_i, t_tokenizer *tokenizer)
 {
 	char	*token;
+	char	*next;
+	char	*combined;
 
 	token = extract_token(line, i, tokenizer);
 	if (!token)
 		return (1);
+	if (ft_strchr(token, '=') && token[ft_strlen(token) - 1] == '=' &&
+		(line[*i] == '"' || line[*i] == '\''))
+	{
+		next = extract_token(line, i, tokenizer);
+		if (!next)
+			return (1);
+		combined = ft_strjoin(token, next);
+		token = combined;
+	}
 	if (ft_strcmp(token, "|") == 0)
 	{
 		if (*cmd_i == 0 || !line[*i])
@@ -70,6 +81,6 @@ void	init_tokenizer(t_infos *infos, char *line, t_tokenizer *tokenizer)
 	if (!tokenize_line(line, tokenizer))
 		return ;
 	if (tokenizer->is_heredoc == 0)
-		expand_all_tokens(tokenizer, infos->envp_info->env);
+		expand_all_tokens(tokenizer, infos->envp_info->env, line);
 	execute_commands(tokenizer, infos);
 }

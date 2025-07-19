@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 14:27:39 by tamounir          #+#    #+#             */
-/*   Updated: 2025/07/18 23:17:52 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/07/18 23:45:43 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,12 @@ char **extract_heredoc_infs(char **cmds, char **out_delimiter, char *file)
 {
 	int		i = 0;
 	int		j = 0;
-	int		heredoc_index = -1;
+	int		heredoc_index;
 	char	**new_cmds;
-	int count;
+	int 	count;
 
 	count = 0;
+	heredoc_index = -1;
 	while (cmds[i])
 	{
 		if (ft_strcmp(cmds[i], "<<") == 0)
@@ -131,7 +132,7 @@ int	ft_heredoc_init(char **cmds, t_infos *infos)
 	char	**new_cmds;
 	char	*path;
 	char	*file;
-	char *ito_file;
+	char 	*ito_file;
 
 	ito_file = ft_itoa(rand());
 	file = ft_strjoin("/tmp/", ito_file);

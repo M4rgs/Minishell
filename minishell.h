@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 12:26:53 by tamounir          #+#    #+#             */
-/*   Updated: 2025/07/18 23:22:03 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/07/19 02:49:34 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,5 +67,6 @@ void	builting_export_only(char **env);
 char	*find_path_env(char **envp);
 int		ft_heredoc_init(char **cmds, t_infos *infos);
 char	*get_command_path(char *cmd, char **envp);
-void	expand_all_tokens(t_tokenizer *tokenizer, char **env);
+void expand_all_tokens(t_tokenizer *tokenizer, char **env, char *line);
+char 	*ft_strjoin_char(char *s, char c);
 #endif

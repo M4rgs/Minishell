@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 04:18:09 by tamounir          #+#    #+#             */
-/*   Updated: 2025/07/17 04:30:34 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/07/19 02:50:49 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,17 @@ char *expand_env_var(const char *str, int *i_ptr, char **env, char *result)
 	if (!value)
 		value = ft_strdup("");
 	tmp = ft_strjoin(result, value);
-	return tmp;
+	return (tmp);
 }
 
 char *expand_vars_in_string(char *str, char **env)
 {
-	int		i = 0;
-	char	*result = ft_strdup("");
+	int		i;
+	char	*result;
+	char	*tmp;
 
+	result = ft_strdup("");
+	i = 0;
 	while (str[i])
 	{
 		if (str[i] == '$')
@@ -60,30 +63,59 @@ char *expand_vars_in_string(char *str, char **env)
 				result = expand_env_var(str, &i, env, result);
 			else
 			{
-				char *tmp = ft_strjoin_char(result, '$');
+				tmp = ft_strjoin_char(result, '$');
 				result = tmp;
 			}
 		}
 		else
 		{
-			char *tmp = ft_strjoin_char(result, str[i]);
+			tmp = ft_strjoin_char(result, str[i]);
 			result = tmp;
 			i++;
 		}
 	}
-	return result;
+	if (!*result)
+		return (NULL);
+	return (result);
 }
 
-void	expand_all_tokens(t_tokenizer *tokenizer, char **env)
+
+
+
+void expand_all_tokens(t_tokenizer *tokenizer, char **env, char *line)
 {
 	int		i;
-	char	*expanded;
-
+	int		j;
+	int		k;
+	char	**new_cmds;
+	char	*expanded, **split;
+	
 	i = 0;
-	while (tokenizer->commands && tokenizer->commands[i])
+	j = 0;
+	k = 0;
+	new_cmds  = ft_malloc((sizeof(char *) * (ft_strlen(line) + 1)), 1);
+	while (tokenizer->commands[i])
 	{
+		if (tokenizer->commands[0] && ft_strcmp(tokenizer->commands[0], "export") == 0)
+			return;
 		expanded = expand_vars_in_string(tokenizer->commands[i], env);
-		tokenizer->commands[i] = expanded;
+		if (expanded && ft_strchr(expanded, ' '))
+		{
+			split = ft_split(expanded, ' ');
+			j = 0;
+			while (split[j])
+			{
+				new_cmds[k++] = ft_strdup(split[j]);
+				j++;
+			}
+			free(expanded);
+		}
+		else
+		{
+			new_cmds[k++] = expanded;
+		}
 		i++;
 	}
+	new_cmds[k] = NULL;
+	tokenizer->commands = new_cmds;
 }

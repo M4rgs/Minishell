@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 03:46:47 by tamounir          #+#    #+#             */
-/*   Updated: 2025/07/18 03:44:29 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/07/19 02:10:55 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,25 @@ char	*extract_quoted_token(char *line, int *i, t_tokenizer *tokenizer)
 		if (line[*i] != quote)
 		{
 			printf("Syntax error: unmatched %c\n", quote);
+			g_last_exit_status = 258;
+			return (NULL);
+		}
+		len = *i - start;
+		token = ft_substr(line, start, len);
+		(*i)++;
+		return (token);
+	}
+	if (line[*i] == '$' && (line[*i + 1] == '"' || line[*i + 1] == '\''))
+	{
+		quote = line[*i + 1];
+		*i += 2;
+		start = *i;
+		while (line[*i] && line[*i] != quote)
+			(*i)++;
+		if (line[*i] != quote)
+		{
+			printf("Syntax error: unmatched %c\n", quote);
+			g_last_exit_status = 258;
 			return (NULL);
 		}
 		len = *i - start;
@@ -67,6 +86,7 @@ char	*extract_quoted_token(char *line, int *i, t_tokenizer *tokenizer)
 		if (line[*i] != quote)
 		{
 			printf("Syntax error: unmatched %c\n", quote);
+			g_last_exit_status = 258;
 			return (NULL);
 		}
 		len = *i - start;
