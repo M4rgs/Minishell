@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 04:18:09 by tamounir          #+#    #+#             */
-/*   Updated: 2025/07/19 02:50:49 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/07/19 23:22:30 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ char *expand_env_var(const char *str, int *i_ptr, char **env, char *result)
 		(*i_ptr)++;
 	var_name = ft_substr(str, start, *i_ptr - start);
 	value = get_env_value(env, var_name);
-	free(var_name);
 	if (!value)
 		value = ft_strdup("");
 	tmp = ft_strjoin(result, value);
@@ -79,9 +78,6 @@ char *expand_vars_in_string(char *str, char **env)
 	return (result);
 }
 
-
-
-
 void expand_all_tokens(t_tokenizer *tokenizer, char **env, char *line)
 {
 	int		i;
@@ -108,7 +104,6 @@ void expand_all_tokens(t_tokenizer *tokenizer, char **env, char *line)
 				new_cmds[k++] = ft_strdup(split[j]);
 				j++;
 			}
-			free(expanded);
 		}
 		else
 		{

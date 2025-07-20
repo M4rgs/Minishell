@@ -6,13 +6,13 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 09:35:51 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/24 00:48:24 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/07/19 06:02:41 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	remove_env_var(char ***env, const char *key)
+int	remove_env_var(char ***env, char *key)
 {
 	char	**new_env;
 	int		index;

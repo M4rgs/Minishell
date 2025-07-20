@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 14:27:39 by tamounir          #+#    #+#             */
-/*   Updated: 2025/07/18 23:45:43 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/07/20 03:06:28 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	execute__heredoc(char **new_cmds, char *path, char **envp, char *file)
 	return (0);
 }
 
-char **extract_heredoc_infs(char **cmds, char **out_delimiter, char *file)
+char **extract_heredoc_infs(char **cmds, char **out_delimiter)
 {
 	int		i = 0;
 	int		j = 0;
@@ -77,7 +77,7 @@ char **extract_heredoc_infs(char **cmds, char **out_delimiter, char *file)
 	return (new_cmds);
 }
 
-int	heredoc_input(char *delimiter, char *file)
+int	heredoc_input(char *delimiter, char *file, t_infos *infos)
 {
 	char	*input;
 	int		fd;
@@ -106,6 +106,8 @@ int	heredoc_input(char *delimiter, char *file)
 			input = readline(">> ");
 			if (!input)
 				break;
+			if (infos->tokenizer->has_to_expand == 1)
+				input = expand_vars_in_string(input, infos->envp_info->env);
 			if (ft_strcmp(input, delimiter) == 0)
 			{
 				free(input);
@@ -136,11 +138,11 @@ int	ft_heredoc_init(char **cmds, t_infos *infos)
 
 	ito_file = ft_itoa(rand());
 	file = ft_strjoin("/tmp/", ito_file);
-	new_cmds = extract_heredoc_infs(cmds, &delimiter, file);
+	new_cmds = extract_heredoc_infs(cmds, &delimiter);
 	if (!new_cmds)
 		return (0);
 	path = get_command_path(new_cmds[0], infos->envp_info->env);
-	if (!heredoc_input(delimiter, file))
+	if (!heredoc_input(delimiter, file, infos))
 		return (0);
 	execute__heredoc(new_cmds, path, infos->envp_info->env, file);
 	return (1);

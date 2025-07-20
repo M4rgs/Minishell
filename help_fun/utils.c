@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 09:31:40 by tamounir          #+#    #+#             */
-/*   Updated: 2025/05/24 03:49:11 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/07/19 23:22:19 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +22,6 @@ char	*ft_strjoin3(char *s1, char *s2, char *s3)
 		return (NULL);
 	res = ft_strjoin(tmp, s3);
 	return (res);
-}
-
-void	ft_free_split(char **arr)
-{
-	int	i;
-
-	if (!arr)
-		return ;
-	i = 0;
-	while (arr[i])
-		free(arr[i++]);
 }
 
 int	get_env_index(char **env, const char *key)

@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 12:05:43 by tamounir          #+#    #+#             */
-/*   Updated: 2025/07/19 02:45:21 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/07/19 23:23:06 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ char	*get_command_path(char *cmd, char **envp)
 		full_path = NULL;
 		i++;
 	}
-	ft_free_split(paths);
 	return (full_path);
 }
 
