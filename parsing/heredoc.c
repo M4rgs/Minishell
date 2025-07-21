@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 14:27:39 by tamounir          #+#    #+#             */
-/*   Updated: 2025/07/21 06:15:04 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/07/21 06:43:09 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,7 @@ int	ft_heredoc_init(char **cmds, t_infos *infos, t_tokenizer *tokenizer)
 	char	*file;
 	char 	*ito_file;
 
+	tokenizer->is_heredoc = 0;
 	ito_file = ft_itoa(rand());
 	file = ft_strjoin("/tmp/", ito_file);
 	new_cmds = extract_heredoc_infs(cmds, &delimiter);

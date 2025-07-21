@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 03:46:47 by tamounir          #+#    #+#             */
-/*   Updated: 2025/07/20 03:25:29 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/07/21 07:43:37 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ char	*extract_quoted_token(char *line, int *i, t_tokenizer *tokenizer)
 		len = *i - start;
 		token = ft_substr(line, start, len);
 		(*i)++;
+		puts(token);
 		return (token);
 	}
 	return (NULL);
