@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 03:46:47 by tamounir          #+#    #+#             */
-/*   Updated: 2025/07/21 07:43:37 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/07/21 12:51:08 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,11 @@ char	*extract_quoted_token(char *line, int *i, t_tokenizer *tokenizer)
 		quote = line[(*i)++];
 		start = *i;
 		while (line[*i] && line[*i] != quote)
+		{
+			if (line[*i] == '<' && line[*i + 1] == '<')
+				tokenizer->is_heredoc = 0;
 			(*i)++;
+		}
 		if (line[*i] != quote)
 		{
 			printf("Syntax error: unmatched %c\n", quote);
@@ -92,7 +96,6 @@ char	*extract_quoted_token(char *line, int *i, t_tokenizer *tokenizer)
 		len = *i - start;
 		token = ft_substr(line, start, len);
 		(*i)++;
-		puts(token);
 		return (token);
 	}
 	return (NULL);
