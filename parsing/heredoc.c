@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 14:27:39 by tamounir          #+#    #+#             */
-/*   Updated: 2025/07/20 03:06:28 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/07/21 06:15:04 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,12 +77,12 @@ char **extract_heredoc_infs(char **cmds, char **out_delimiter)
 	return (new_cmds);
 }
 
-int	heredoc_input(char *delimiter, char *file, t_infos *infos)
+int	heredoc_input(char *delimiter, char *file, t_infos *infos, t_tokenizer *tokenizer)
 {
 	char	*input;
 	int		fd;
 	pid_t	pid;
-
+	
 	unlink(file);
 	fd = open(file, O_CREAT | O_WRONLY | O_TRUNC, 0666);
 	if (fd == -1)
@@ -106,8 +106,12 @@ int	heredoc_input(char *delimiter, char *file, t_infos *infos)
 			input = readline(">> ");
 			if (!input)
 				break;
-			if (infos->tokenizer->has_to_expand == 1)
+			if (tokenizer->has_to_expand == 1)
+			{
 				input = expand_vars_in_string(input, infos->envp_info->env);
+				if (input == NULL)
+					input = ft_strdup("");
+			}
 			if (ft_strcmp(input, delimiter) == 0)
 			{
 				free(input);
@@ -128,7 +132,7 @@ int	heredoc_input(char *delimiter, char *file, t_infos *infos)
 	return (1);
 }
 
-int	ft_heredoc_init(char **cmds, t_infos *infos)
+int	ft_heredoc_init(char **cmds, t_infos *infos, t_tokenizer *tokenizer)
 {
 	char	*delimiter;
 	char	**new_cmds;
@@ -142,7 +146,7 @@ int	ft_heredoc_init(char **cmds, t_infos *infos)
 	if (!new_cmds)
 		return (0);
 	path = get_command_path(new_cmds[0], infos->envp_info->env);
-	if (!heredoc_input(delimiter, file, infos))
+	if (!heredoc_input(delimiter, file, infos, tokenizer))
 		return (0);
 	execute__heredoc(new_cmds, path, infos->envp_info->env, file);
 	return (1);

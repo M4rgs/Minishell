@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 04:18:09 by tamounir          #+#    #+#             */
-/*   Updated: 2025/07/19 23:22:30 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/07/20 18:06:11 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,8 @@ void expand_all_tokens(t_tokenizer *tokenizer, char **env, char *line)
 	new_cmds  = ft_malloc((sizeof(char *) * (ft_strlen(line) + 1)), 1);
 	while (tokenizer->commands[i])
 	{
+		if (tokenizer->commands[i][0] == '$' && tokenizer->commands[i][1] == '$')
+			tokenizer->commands[i] = to_change(tokenizer->commands[i], '$', '5');
 		if (tokenizer->commands[0] && ft_strcmp(tokenizer->commands[0], "export") == 0)
 			return;
 		expanded = expand_vars_in_string(tokenizer->commands[i], env);

@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 12:05:43 by tamounir          #+#    #+#             */
-/*   Updated: 2025/07/19 23:23:06 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/07/21 06:08:45 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	check_builtings(t_tokenizer *tokenizer, t_infos *infos)
 	while (tokenizer->commands[i])
 	{
 		if (ft_strcmp(tokenizer->commands[i], "<<") == 0)
-			return (ft_heredoc_init(tokenizer->commands, infos));
+			return (ft_heredoc_init(tokenizer->commands, infos, tokenizer));
 		i++;
 	}
 	if (ft_strcmp(tokenizer->commands[0], "export") == 0)

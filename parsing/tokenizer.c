@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 20:20:18 by tamounir          #+#    #+#             */
-/*   Updated: 2025/07/19 06:21:08 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/07/21 06:10:11 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	init_tokenizer(t_infos *infos, char *line, t_tokenizer *tokenizer)
 		g_last_exit_status = 2;
 		return ;
 	}
-	if (has_heredoc(line) == 1)
+	if (has_heredoc(line, tokenizer) == 1)
 		tokenizer->is_heredoc = 1;
 	if (!tokenize_line(line, tokenizer))
 		return ;

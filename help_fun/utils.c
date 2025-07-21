@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 09:31:40 by tamounir          #+#    #+#             */
-/*   Updated: 2025/07/19 23:22:19 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/07/21 06:14:27 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,19 @@ int	is_whitespace(char c)
 	return (0);
 }
 
-int	has_heredoc(char *line)
+int	is_delimiter_has_quote(char *s)
+{
+	int	i;
+
+	i = 0;
+	while (is_whitespace(s[i]))
+		i++;
+	if (s[i] == '\'' || s[i] == '"')
+		return (1);
+	return (0);
+}
+
+int	has_heredoc(char *line, t_tokenizer *tokenizer)
 {
 	int	i;
 
@@ -55,7 +67,13 @@ int	has_heredoc(char *line)
 	while (line[i])
 	{
 		if (line[i] == '<' && line[i + 1] == '<')
+		{
+			if (is_delimiter_has_quote(line + i + 2) == 0)
+				tokenizer->has_to_expand = 1;
+			else
+				tokenizer->has_to_expand = 0;
 			return (1);
+		}
 		i++;
 	}
 	return (0);
