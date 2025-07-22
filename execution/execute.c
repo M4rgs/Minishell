@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 12:05:43 by tamounir          #+#    #+#             */
-/*   Updated: 2025/07/22 08:23:21 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/07/22 09:32:09 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,34 @@ char	*get_command_path(char *cmd, char **envp)
 	return (full_path);
 }
 
+int	minishel_inside_minishell(t_tokenizer *tokenizer, t_infos *infos)
+{
+	pid_t	pid;
+	int		status;
+
+	if (tokenizer->commands[0][0] == '/' || 
+    (tokenizer->commands[0][0] == '.' && tokenizer->commands[0][1] == '/'))
+	{
+		pid = fork();
+		if (pid == -1)
+			return (0);
+		else if (pid == 0)
+		{
+    		execve(tokenizer->commands[0], tokenizer->commands, infos->envp_info->env);
+   	 		perror("execve");
+    		exit(1);		
+		}
+		else
+		{
+			waitpid(pid, &status, 0);
+			if (WIFEXITED(status))
+				g_last_exit_status = WEXITSTATUS(status);
+		}
+		return (1);
+	}
+	return (0);
+}
+
 void	execute_commands(t_tokenizer *tokenizer, t_infos *infos)
 {
 	pid_t	pid;
@@ -75,6 +103,8 @@ void	execute_commands(t_tokenizer *tokenizer, t_infos *infos)
 	if (!tokenizer->commands || !tokenizer->commands[0])
 		return ;
 	if (check_builtings(tokenizer, infos) == 1)
+		return ;
+	if (minishel_inside_minishell(tokenizer, infos) == 1)
 		return ;
 	path = get_command_path(tokenizer->commands[0], infos->envp_info->env);
 	if (!path)

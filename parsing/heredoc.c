@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 14:27:39 by tamounir          #+#    #+#             */
-/*   Updated: 2025/07/22 08:13:34 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/07/22 09:28:30 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,12 @@ char **extract_heredoc_infs(char **cmds, char **out_delimiter)
 			break;
 		}
 		i++;
+	}
+	if (cmds[heredoc_index + 1] == NULL)
+	{
+		printf("syntax error near unexpected token `newline'\n");
+		g_last_exit_status = 258;
+		return (NULL);
 	}
 	if (heredoc_index == -1 || cmds[heredoc_index + 1] == NULL)
 		return (NULL);
@@ -145,10 +151,10 @@ int	ft_heredoc_init(char **cmds, t_infos *infos, t_tokenizer *tokenizer)
 	file = ft_strjoin("/tmp/", ito_file);
 	new_cmds = extract_heredoc_infs(cmds, &delimiter);
 	if (!new_cmds)
-		return (0);
+		return (1);
 	path = get_command_path(new_cmds[0], infos->envp_info->env);
 	if (!heredoc_input(delimiter, file, infos, tokenizer))
-		return (0);
+		return (1);
 	execute__heredoc(new_cmds, path, infos->envp_info->env, file);
 	return (1);
 }

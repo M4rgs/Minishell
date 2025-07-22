@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 03:46:47 by tamounir          #+#    #+#             */
-/*   Updated: 2025/07/22 08:23:23 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/07/22 08:40:08 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,10 @@ char	*extract_quoted_token(char *line, int *i, t_tokenizer *tokenizer)
 	char	*token;
 
 	if (line[*i] == '$' && (line[*i + 1] == '"' || line[*i + 1] == '\''))
+	{
+		tokenizer->has_to_expand = 0;
 		(*i)++;
+	}
 	if (line[*i] != '"' && line[*i] != '\'')
 		return (NULL);
 	quote = line[(*i)++];
