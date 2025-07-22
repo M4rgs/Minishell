@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 09:31:40 by tamounir          #+#    #+#             */
-/*   Updated: 2025/07/21 13:01:31 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/07/22 08:12:49 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	has_heredoc(char *line, t_tokenizer *tokenizer)
 	{
 		if (line[i] == '<' && line[i + 1] == '<')
 		{
-			if (is_delimiter_has_quote(line + i + 2) == 0)
+			if ((is_delimiter_has_quote(line + i + 2) == 0) && (ft_strchr(line, '$') == NULL))
 				tokenizer->has_to_expand = 1;
 			else
 				tokenizer->has_to_expand = 0;
