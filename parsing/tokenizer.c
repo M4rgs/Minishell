@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 20:20:18 by tamounir          #+#    #+#             */
-/*   Updated: 2025/07/22 08:42:55 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/07/23 18:06:09 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ int	tokenize_line(char *line, t_tokenizer *tokenizer)
 
 void	init_tokenizer(t_infos *infos, char *line, t_tokenizer *tokenizer)
 {
+	if (ft_strncmp(line, "exit", 4) == 0)
+			ft_exit(line);
 	if (ft_strcmp(line, ".") == 0)
 	{
 		printf("bash: .: filename argument required\n.: usage: . filename [arguments]\n");
