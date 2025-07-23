@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 12:27:53 by tamounir          #+#    #+#             */
-/*   Updated: 2025/07/19 03:37:56 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/07/23 18:04:35 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,11 +83,8 @@ int	main(int ac, char **av, char **envp)
 		input = readline(infos.prom);
 		if (!input)
 			break ;
-		if (ft_strcmp(input, "exit") == 0)
-		{
-			ft_malloc(0, 0);
-			exit(0);
-		}
+		if (ft_strncmp(input, "exit", 4) == 0)
+			ft_exit(input);
 		if (*input)
 			add_history(input);
 		init_tokenizer(&infos, input, &tokenizer);

@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 12:26:53 by tamounir          #+#    #+#             */
-/*   Updated: 2025/07/22 09:28:15 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/07/23 18:04:47 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,5 +71,6 @@ void 	expand_all_tokens(t_tokenizer *tokenizer, char **env, char *line);
 char 	*ft_strjoin_char(char *s, char c);
 char	 *expand_vars_in_string(char *str, char **env);
 char	*to_change(char *str, char c, char b);
+void	ft_exit(char *input);
 
 #endif

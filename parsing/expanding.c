@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 04:18:09 by tamounir          #+#    #+#             */
-/*   Updated: 2025/07/22 09:28:20 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/07/23 17:43:00 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,39 +78,59 @@ char *expand_vars_in_string(char *str, char **env)
 	return (result);
 }
 
+void expand_export_tokens(t_tokenizer *tokenizer, char **env)
+{
+	int		i = 1;
+	int		k = 1;
+	char	**new_cmds;
+	char	*expanded;
+	char	*eq;
+	char	*key;
+	char	*value;
+
+	new_cmds = ft_malloc(sizeof(char *) * 1024, 1);
+	new_cmds[0] = ft_strdup("export");
+	while (tokenizer->commands[i])
+	{
+		eq = ft_strchr(tokenizer->commands[i], '=');
+		if (eq)
+		{
+			key = ft_substr(tokenizer->commands[i], 0, eq - tokenizer->commands[i]);
+			value = expand_vars_in_string(eq + 1, env);
+			expanded = ft_strjoin3(key, "=", value);
+			new_cmds[k++] = expanded;
+		}
+		else
+			new_cmds[k++] = ft_strdup(tokenizer->commands[i]);
+		i++;
+	}
+	new_cmds[k] = NULL;
+	tokenizer->commands = new_cmds;
+}
+
 void expand_all_tokens(t_tokenizer *tokenizer, char **env, char *line)
 {
-	int		i;
-	int		j;
-	int		k;
+	int		i = 0, k = 0;
 	char	**new_cmds;
-	char	*expanded, **split;
-	
-	i = 0;
-	j = 0;
-	k = 0;
-	new_cmds  = ft_malloc((sizeof(char *) * (ft_strlen(line) + 1)), 1);
+	char	*expanded;
+	char	**split;
+
+	new_cmds = ft_malloc((sizeof(char *) * (ft_strlen(line) + 1)), 1);
+	if (tokenizer->commands[0] && ft_strcmp(tokenizer->commands[0], "export") == 0)
+		return expand_export_tokens(tokenizer, env);
 	while (tokenizer->commands[i])
 	{
 		if (tokenizer->commands[i][0] == '$' && tokenizer->commands[i][1] == '$')
 			tokenizer->commands[i] = to_change(tokenizer->commands[i], '$', '5');
-		if (tokenizer->commands[0] && ft_strcmp(tokenizer->commands[0], "export") == 0)
-			return;
 		expanded = expand_vars_in_string(tokenizer->commands[i], env);
 		if (expanded && ft_strchr(expanded, ' '))
 		{
 			split = ft_split(expanded, ' ');
-			j = 0;
-			while (split[j])
-			{
+			for (int j = 0; split[j]; j++)
 				new_cmds[k++] = ft_strdup(split[j]);
-				j++;
-			}
 		}
 		else
-		{
 			new_cmds[k++] = expanded;
-		}
 		i++;
 	}
 	new_cmds[k] = NULL;
