@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 09:30:14 by tamounir          #+#    #+#             */
-/*   Updated: 2025/07/24 09:24:34 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/07/24 10:49:50 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,7 @@ int	update_env_entry(char ***env, char *key, char *value, int append)
 		new_entry = ft_strjoin3(key, "=", joined);
 	}
 	else
-	{
 		new_entry = ft_strjoin3(key, "=", value);
-	}
 	if (index != -1)
 	{
 		(*env)[index] = new_entry;
@@ -59,12 +57,9 @@ int	update_env_entry(char ***env, char *key, char *value, int append)
 	new_env = ft_malloc(sizeof(char *) * (i + 2), 1);
 	if (!new_env)
 		return (0);
-	i = 0;
-	while ((*env)[i])
-	{
+	i = -1;
+	while ((*env)[++i])
 		new_env[i] = (*env)[i];
-		i++;
-	}
 	new_env[i] = new_entry;
 	new_env[i + 1] = NULL;
 	*env = new_env;
@@ -80,32 +75,27 @@ int	parse_and_add_export(char ***env, char *arg)
 	int		append;
 
 	append = 0;
-	key = NULL;
-	value = NULL;
 	plus_eq = ft_strnstr(arg, "+=", ft_strlen(arg));
 	equal = ft_strchr(arg, '=');
-	if (plus_eq)
+	if (plus_eq || equal)
 	{
-		append = 1;
-		key = ft_substr(arg, 0, plus_eq - arg);
-		if (ft_isalpha(key[0]) == 0)
+		if (plus_eq)
+		{
+			append = 1;
+			key = ft_substr(arg, 0, plus_eq - arg);
+			value = ft_strdup(plus_eq + 2);
+		}
+		else
+		{
+			key = ft_substr(arg, 0, equal - arg);
+			value = ft_strdup(equal + 1);
+		}
+		if (!key || ft_isalpha(key[0]) == 0)
 		{
 			printf("Minishell : export: `': not a valid identifier\n");
 			g_last_exit_status = 1;
 			return (0);
 		}
-		value = ft_strdup(plus_eq + 2);
-	}
-	else if (equal)
-	{
-		key = ft_substr(arg, 0, equal - arg);
-		if (ft_isalpha(key[0]) == 0)
-		{
-			printf("Minishell : export: `': not a valid identifier\n");
-			g_last_exit_status = 1;
-			return (0);
-		}
-		value = ft_strdup(equal + 1);
 	}
 	else
 	{

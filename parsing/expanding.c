@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 04:18:09 by tamounir          #+#    #+#             */
-/*   Updated: 2025/07/24 09:21:09 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/07/24 10:55:16 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 
 char	*ft_strjoin_char(char *s, char c)
 {
-	char	tmp[2] = {c, 0};
+	char	tmp[2];
 
+	tmp[0] = c;
+	tmp[1] = '\0';
 	return (ft_strjoin(s, tmp));
 }
 
