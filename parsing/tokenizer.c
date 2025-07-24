@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 20:20:18 by tamounir          #+#    #+#             */
-/*   Updated: 2025/07/23 18:06:09 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/07/24 09:12:30 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ int	process_token(char *line, int *i, int *cmd_i, t_tokenizer *tokenizer)
 	token = extract_token(line, i, tokenizer);
 	if (!token)
 		return (1);
-	if (ft_strchr(token, '=') && token[ft_strlen(token) - 1] == '=' &&
-		(line[*i] == '"' || line[*i] == '\''))
+	if (ft_strchr(token, '=') && token[ft_strlen(token) - 1] == '=' \
+		&& (line[*i] == '"' || line[*i] == '\''))
 	{
 		next = extract_token(line, i, tokenizer);
 		if (!next)
@@ -71,10 +71,11 @@ int	tokenize_line(char *line, t_tokenizer *tokenizer)
 void	init_tokenizer(t_infos *infos, char *line, t_tokenizer *tokenizer)
 {
 	if (ft_strncmp(line, "exit", 4) == 0)
-			ft_exit(line);
+		ft_exit(line);
 	if (ft_strcmp(line, ".") == 0)
 	{
-		printf("bash: .: filename argument required\n.: usage: . filename [arguments]\n");
+		printf("bash: .: filename argument required\n.: \
+			usage: . filename [arguments]\n");
 		g_last_exit_status = 2;
 		return ;
 	}

@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 03:44:38 by tamounir          #+#    #+#             */
-/*   Updated: 2025/07/23 18:04:38 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/07/24 09:11:02 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char	*to_change(char *str, char c, char b)
 {
-	int i;
+	int		i;
 	char	*dest;
 
 	i = 0;
@@ -50,11 +50,10 @@ void	ft_exit(char *input)
 	char	**splitted;
 	int		i;
 
-	
 	i = 0;
 	splitted = ft_split(input, ' ');
 	if (ft_strcmp(splitted[0], "exit") == 0)
-	{	
+	{
 		if (splitted[1] && ft_isdigit_string(splitted[1]) == 0)
 			g_last_exit_status = ft_atoi(splitted[1]);
 		printf("exit\n");

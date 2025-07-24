@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 12:05:43 by tamounir          #+#    #+#             */
-/*   Updated: 2025/07/22 09:32:09 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/07/24 09:26:05 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,17 +71,18 @@ int	minishel_inside_minishell(t_tokenizer *tokenizer, t_infos *infos)
 	pid_t	pid;
 	int		status;
 
-	if (tokenizer->commands[0][0] == '/' || 
-    (tokenizer->commands[0][0] == '.' && tokenizer->commands[0][1] == '/'))
+	if (tokenizer->commands[0][0] == '/' ||
+		(tokenizer->commands[0][0] == '.' && tokenizer->commands[0][1] == '/'))
 	{
 		pid = fork();
 		if (pid == -1)
 			return (0);
 		else if (pid == 0)
 		{
-    		execve(tokenizer->commands[0], tokenizer->commands, infos->envp_info->env);
-   	 		perror("execve");
-    		exit(1);		
+			execve(tokenizer->commands[0], \
+				tokenizer->commands, infos->envp_info->env);
+			perror("execve");
+			exit(1);
 		}
 		else
 		{

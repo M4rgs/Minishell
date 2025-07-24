@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 03:46:47 by tamounir          #+#    #+#             */
-/*   Updated: 2025/07/22 08:40:08 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/07/24 09:13:42 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*extract_unquoted_token(char *line, int *i)
 	while (line[*i] && !is_whitespace(line[*i])
 		&& line[*i] != '\'' && line[*i] != '"' && line[*i] != '|')
 		(*i)++;
-	return ft_substr(line, start, *i - start);
+	return (ft_substr(line, start, *i - start));
 }
 
 char	*extract_quoted_token(char *line, int *i, t_tokenizer *tokenizer)
@@ -70,12 +70,11 @@ char	*extract_token(char *line, int *i, t_tokenizer *tokenizer)
 		else
 			part = extract_unquoted_token(line, i);
 		if (!part)
-			break;
+			break ;
 		token = ft_strjoin(token, part);
 	}
 	return (token);
 }
-
 
 /*char	*extract_quoted_token(char *line, int *i, t_tokenizer *tokenizer)
 {

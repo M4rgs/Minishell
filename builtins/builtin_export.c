@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 09:30:14 by tamounir          #+#    #+#             */
-/*   Updated: 2025/07/23 10:35:54 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/07/24 09:24:34 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ int	update_env_entry(char ***env, char *key, char *value, int append)
 	int		index;
 	char	*new_entry;
 	char	**new_env;
-	char 	*old_value;
-	char 	*joined;
+	char	*old_value;
+	char	*joined;
 	int		i;
 
 	i = 0;
@@ -56,20 +56,20 @@ int	update_env_entry(char ***env, char *key, char *value, int append)
 	}
 	while ((*env)[i])
 		i++;
-
 	new_env = ft_malloc(sizeof(char *) * (i + 2), 1);
 	if (!new_env)
 		return (0);
-
-	for (i = 0; (*env)[i]; i++)
+	i = 0;
+	while ((*env)[i])
+	{
 		new_env[i] = (*env)[i];
-
+		i++;
+	}
 	new_env[i] = new_entry;
 	new_env[i + 1] = NULL;
 	*env = new_env;
 	return (1);
 }
-
 
 int	parse_and_add_export(char ***env, char *arg)
 {

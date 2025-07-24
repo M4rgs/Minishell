@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 14:27:39 by tamounir          #+#    #+#             */
-/*   Updated: 2025/07/22 09:28:30 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/07/24 09:16:01 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,16 @@ int	execute__heredoc(char **new_cmds, char *path, char **envp, char *file)
 	return (0);
 }
 
-char **extract_heredoc_infs(char **cmds, char **out_delimiter)
+char	**extract_heredoc_infs(char **cmds, char **out_delimiter)
 {
-	int		i = 0;
-	int		j = 0;
+	int		i;
+	int		j;
 	int		heredoc_index;
 	char	**new_cmds;
-	int 	count;
+	int		count;
 
+	i = 0;
+	j = 0;
 	count = 0;
 	heredoc_index = -1;
 	while (cmds[i])
@@ -51,7 +53,7 @@ char **extract_heredoc_infs(char **cmds, char **out_delimiter)
 		if (ft_strcmp(cmds[i], "<<") == 0)
 		{
 			heredoc_index = i;
-			break;
+			break ;
 		}
 		i++;
 	}
@@ -83,12 +85,13 @@ char **extract_heredoc_infs(char **cmds, char **out_delimiter)
 	return (new_cmds);
 }
 
-int	heredoc_input(char *delimiter, char *file, t_infos *infos, t_tokenizer *tokenizer)
+int	heredoc_input(char *delimiter, char *file, \
+	t_infos *infos, t_tokenizer *tokenizer)
 {
 	char	*input;
 	int		fd;
 	pid_t	pid;
-	
+
 	unlink(file);
 	fd = open(file, O_CREAT | O_WRONLY | O_TRUNC, 0666);
 	if (fd == -1)
@@ -96,7 +99,6 @@ int	heredoc_input(char *delimiter, char *file, t_infos *infos, t_tokenizer *toke
 		perror("open");
 		return (0);
 	}
-
 	pid = fork();
 	if (pid == -1)
 	{
@@ -104,14 +106,13 @@ int	heredoc_input(char *delimiter, char *file, t_infos *infos, t_tokenizer *toke
 		close(fd);
 		return (0);
 	}
-
 	if (pid == 0)
 	{
 		while (1)
 		{
 			input = readline(">> ");
 			if (!input)
-				break;
+				break ;
 			if (tokenizer->has_to_expand == 1)
 			{
 				input = expand_vars_in_string(input, infos->envp_info->env);
@@ -121,7 +122,7 @@ int	heredoc_input(char *delimiter, char *file, t_infos *infos, t_tokenizer *toke
 			if (ft_strcmp(input, delimiter) == 0)
 			{
 				free(input);
-				break;
+				break ;
 			}
 			ft_putstr_fd(input, fd);
 			ft_putstr_fd("\n", fd);
@@ -144,7 +145,7 @@ int	ft_heredoc_init(char **cmds, t_infos *infos, t_tokenizer *tokenizer)
 	char	**new_cmds;
 	char	*path;
 	char	*file;
-	char 	*ito_file;
+	char	*ito_file;
 
 	tokenizer->is_heredoc = 0;
 	ito_file = ft_itoa(rand());
