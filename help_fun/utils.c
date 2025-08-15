@@ -6,11 +6,11 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 09:31:40 by tamounir          #+#    #+#             */
-/*   Updated: 2025/07/24 10:55:18 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/08/15 01:59:26 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../include/minishell.h"
 
 char	*ft_strjoin3(char *s1, char *s2, char *s3)
 {
@@ -59,23 +59,16 @@ int	is_delimiter_has_quote(char *s)
 	return (0);
 }
 
-int	has_heredoc(char *line, t_tokenizer *tokenizer)
+char	*find_path_env(char **envp)
 {
-	int	i;
+	int		i;
 
 	i = 0;
-	while (line[i])
+	while (envp[i])
 	{
-		if (line[i] == '<' && line[i + 1] == '<')
-		{
-			if ((is_delimiter_has_quote(line + i + 2) == 0) \
-				&& (ft_strchr(line, '$') == NULL))
-				tokenizer->has_to_expand = 1;
-			else
-				tokenizer->has_to_expand = 0;
-			return (1);
-		}
+		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
+			return (envp[i] + 5);
 		i++;
 	}
-	return (0);
+	return (NULL);
 }

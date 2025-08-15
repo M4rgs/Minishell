@@ -5,61 +5,79 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/24 03:44:38 by tamounir          #+#    #+#             */
-/*   Updated: 2025/07/24 09:11:02 by tamounir         ###   ########.fr       */
+/*   Created: 2025/08/09 19:53:19 by tamounir          #+#    #+#             */
+/*   Updated: 2025/08/15 01:59:26 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../include/minishell.h"
 
-char	*to_change(char *str, char c, char b)
+int	ft_atoi(const char *str)
 {
-	int		i;
-	char	*dest;
+	size_t	i;
+	int		odd;
+	size_t	rzlt;
 
 	i = 0;
-	dest = ft_malloc(ft_strlen(str) + 1, 1);
-	while (str[i])
+	odd = 1;
+	rzlt = 0;
+	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13) || str[i] == '"')
+		i++;
+	if (str[i] == '+' || str[i] == '-')
 	{
-		if (str[i] == c)
-			dest[i] = b;
-		else
-			dest[i] = str[i];
+		if (str[i] == '-')
+			odd = odd * -1;
 		i++;
 	}
-	dest[i] = '\0';
-	return (dest);
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		rzlt = rzlt * 10 + (str[i] - 48);
+		if (rzlt > 9223372036854775807 && odd == -1)
+			return (-1);
+		if (rzlt > 9223372036854775807 && odd == 1)
+			return (-2);
+		i++;
+	}
+	return (rzlt * odd);
 }
 
-int	ft_isdigit_string(char *c)
+void	ft_bzero(void *s, size_t n)
 {
-	int		i;
+	char	*p;
 
-	i = 0;
-	while (c[i])
+	p = (char *)s;
+	while (n > 0)
 	{
-		if (c[i] <= '0' && c[i] >= '9')
-			return (1);
-		i++;
+		*p = 0;
+		p++;
+		n--;
 	}
+}
+
+void	*ft_calloc(size_t count, size_t size)
+{
+	void	*p;
+	size_t	dr;
+
+	dr = count * size;
+	if (count && size != dr / count)
+		return (NULL);
+	p = ft_malloc(count * size, 1);
+	ft_bzero(p, count * size);
+	return (p);
+}
+
+int	ft_isalnum(int c)
+{
+	if ((c >= '0' && c <= '9') || (c >= 'a' && c <= 'z')
+		|| (c >= 'A' && c <= 'Z' ))
+		return (1);
 	return (0);
 }
 
-void	ft_exit(char *input)
+int	ft_isalpha(int c)
 {
-	char	**splitted;
-	int		i;
-
-	i = 0;
-	splitted = ft_split(input, ' ');
-	if (ft_strcmp(splitted[0], "exit") == 0)
-	{
-		if (splitted[1] && ft_isdigit_string(splitted[1]) == 0)
-			g_last_exit_status = ft_atoi(splitted[1]);
-		printf("exit\n");
-		ft_malloc(0, 0);
-		exit(g_last_exit_status);
-	}
-	else
-		return ;
+	if ((c <= 'z' && c >= 'a') || (c <= 'Z' && c >= 'A'))
+		return (1);
+	return (0);
 }

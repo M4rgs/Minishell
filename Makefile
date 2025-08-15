@@ -1,41 +1,66 @@
 NAME = minishell
 
-READLINE = readline
+CC = cc
 
-LIBFT = libft/libft.a
+CFLAGS = -Wall -Wextra -Werror -I$(HOME)/readline/include #-fsanitize=address -g3
 
-CC = gcc
+LIBS = -L$(HOME)/readline/lib -lreadline -lncurses
 
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g3
-
-SRC = minishell.c parsing/tokenizer.c execution/execute.c builtins/builtin_export.c builtins/builtin_unset.c help_fun/utils.c help_fun/utils3.c help_fun/utils2.c parsing/quoted_unquoted.c execution/export_only.c execution/exec_utils.c parsing/heredoc.c parsing/expanding.c
+SRC = minishell.c \
+	  parsing/tokenizer/tokenizer.c \
+	  parsing/tokenizer/syntax_err.c \
+	  parsing/tokenizer/tokenizer_utils.c \
+	  parsing/quotes/quoted_unquoted.c \
+	  parsing/quotes/quoted_utils.c \
+	  parsing/heredoc/heredoc.c \
+	  parsing/expanding/expanding.c \
+	  parsing/expanding/wildcards.c \
+	  parsing/expanding/wildcards_utils.c \
+	  parsing/expanding/expanding_utils.c \
+	  parsing/heredoc/heredoc_utils.c \
+	  parsing/heredoc/heredoc_utils2.c \
+	  execution/execute/execute.c \
+	  execution/execute/check_builtin.c \
+	  execution/execute/check_builtin_utils.c \
+	  execution/execute/execute_utils.c \
+	  execution/redirections/redirections.c \
+	  execution/redirections/redirections_utils.c \
+	  execution/pipes/pipes.c \
+	  execution/pipes/pipes_utils.c \
+	  builtins/builtin_pwd/builtin_pwd.c \
+	  builtins/builtin_echo/builtin_echo.c \
+	  builtins/builtin_export/builtin_export.c \
+	  builtins/builtin_export/export_only.c \
+	  builtins/builtin_export/builtin_export_utils.c \
+	  builtins/builtin_unset/builtin_unset.c \
+	  builtins/builtin_exit/builtin_exit.c \
+	  builtins/builtin_exit/builtin_exit_utils.c \
+	  builtins/builtin_cd/builtin_cd.c \
+	  help_fun/utils.c \
+	  help_fun/utils2.c \
+	  help_fun/utils3.c \
+	  help_fun/utils4.c \
+	  help_fun/utils5.c \
+	  help_fun/utils6.c \
+	  help_fun/utils7.c \
+	  help_fun/ft_malloc.c \
+	  help_fun/ft_split.c \
 
 OBJ = $(SRC:.c=.o)
 
-
-all: $(READLINE)  $(NAME)
-
-$(READLINE):
-	curl -O https://ftp.gnu.org/gnu/readline/readline-8.2.tar.gz
-	tar -xvf readline-8.2.tar.gz
-	cd readline-8.2 && ./configure --prefix=${PWD}/readline
-	cd readline-8.2 && make install
+all: $(NAME)
 
 $(NAME): $(OBJ)
-	make -C libft/
-	$(CC) $(CFLAGS) -o $@ $^  ${LIBFT} -L${PWD}/readline/lib  -I${PWD}/readline/include/ -lreadline -lncurses
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIBS)
 
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@ -I${PWD}/readline/include/
+%.o: %.c include/minishell.h
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	make clean -C libft/
 	rm -f $(OBJ)
 
 fclean: clean
 	rm -f $(NAME)
-	make fclean -C libft/
-	@rm -rf readline-8.2 readline-8.2.tar.gz
 
 re: fclean all
 

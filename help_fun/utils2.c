@@ -6,11 +6,11 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 03:44:28 by tamounir          #+#    #+#             */
-/*   Updated: 2025/07/19 02:12:51 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/08/15 01:59:26 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../include/minishell.h"
 
 char	*get_env_value(char **env, const char *key)
 {
@@ -32,11 +32,31 @@ char	**default_env(void)
 {
 	char	**p;
 
-	p = ft_malloc((sizeof(char *) * 3), 1);
-	if (!p)
-		return (NULL);
+	p = ft_malloc((sizeof(char *) * 5), 1);
 	p[0] = ft_strdup("PATH=/usr/local/sbin:/usr/local/bin:/usr/bin:/bin");
-	p[1] = ft_strdup("PWD=/home/tamounir/Desktop/Minishell");
-	p[2] = NULL;
+	p[1] = ft_strdup("OLDPWD");
+	p[2] = ft_strdup("PWD=/home/tamounir/Desktop/Minishell");
+	p[3] = ft_strdup("SHLVL=1");
+	p[4] = NULL;
 	return (p);
+}
+
+int	exit_status_value(int value, int flag)
+{
+	static int	exit_status_value = 0;
+
+	if (flag == 1)
+		exit_status_value = value;
+	return (exit_status_value);
+}
+
+int	is_double_operator(char c1, char c2)
+{
+	return ((c1 == '<' && c2 == '<') \
+			|| (c1 == '>' && c2 == '>'));
+}
+
+int	is_operator_char(char c)
+{
+	return (c == '<' || c == '>' || c == '|');
 }
