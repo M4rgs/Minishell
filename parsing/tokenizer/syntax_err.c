@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 02:37:13 by tamounir          #+#    #+#             */
-/*   Updated: 2025/08/15 01:59:26 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/08/15 03:21:30 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ static int	validate_redir_missing_next(t_tokenizer *tokenizer)
 		{
 			if (!tokenizer->commands[i + 1])
 			{
-				ft_putstr_fd(PIPE_ERR, 2);
+				ft_putstr_fd(NEWL_ERR, 2);
 				exit_status_value(2, 1);
 				return (1);
 			}

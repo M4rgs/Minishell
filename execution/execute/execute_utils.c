@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 16:43:59 by tamounir          #+#    #+#             */
-/*   Updated: 2025/08/15 01:59:26 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/08/15 03:20:04 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ char	*get_command_path(char *cmd, char **envp)
 
 void	print_error(char *cmd, char *msg)
 {
-	write(2, "minishell: ", 11);
+	write(2, "Minishell: ", 11);
 	write(2, cmd, ft_strlen(cmd));
 	write(2, msg, ft_strlen(msg));
 }

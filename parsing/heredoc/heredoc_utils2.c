@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 03:31:47 by tamounir          #+#    #+#             */
-/*   Updated: 2025/08/15 01:59:26 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/08/15 03:20:45 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	find_heredoc_index(char **cmds)
 char	**handle_heredoc_syntax_error(void)
 {
 	exit_status_value(258, 1);
-	ft_putstr_fd("syntax error near unexpected token `newline'\n", 2);
+	ft_putstr_fd(NEWL_ERR, 2);
 	return (NULL);
 }
 
