@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 03:44:28 by tamounir          #+#    #+#             */
-/*   Updated: 2025/08/15 01:59:26 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/08/16 05:28:41 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,19 @@ char	*get_env_value(char **env, const char *key)
 char	**default_env(void)
 {
 	char	**p;
+	char	*pwd;
 
 	p = ft_malloc((sizeof(char *) * 5), 1);
 	p[0] = ft_strdup("PATH=/usr/local/sbin:/usr/local/bin:/usr/bin:/bin");
-	p[1] = ft_strdup("OLDPWD");
-	p[2] = ft_strdup("PWD=/home/tamounir/Desktop/Minishell");
+	p[1] = ft_strdup("OLDPWD=");
+	pwd = getcwd(NULL, 0);
+	if (pwd)
+		p[2] = ft_strdup(ft_strjoin("PWD=", pwd));
+	else
+		p[2] = ft_strdup("PWD=");
 	p[3] = ft_strdup("SHLVL=1");
 	p[4] = NULL;
+	free(pwd);
 	return (p);
 }
 

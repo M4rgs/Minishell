@@ -2,7 +2,7 @@ NAME = minishell
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -I$(HOME)/readline/include #-fsanitize=address -g3
+CFLAGS = -Wall -Wextra -Werror -I$(HOME)/readline/include -fsanitize=address -g3
 
 LIBS = -L$(HOME)/readline/lib -lreadline -lncurses
 
@@ -36,6 +36,7 @@ SRC = minishell.c \
 	  builtins/builtin_exit/builtin_exit.c \
 	  builtins/builtin_exit/builtin_exit_utils.c \
 	  builtins/builtin_cd/builtin_cd.c \
+	  builtins/builtin_env/builtin_env.c \
 	  help_fun/utils.c \
 	  help_fun/utils2.c \
 	  help_fun/utils3.c \

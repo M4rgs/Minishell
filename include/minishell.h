@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 12:26:53 by tamounir          #+#    #+#             */
-/*   Updated: 2025/08/16 02:35:46 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/08/16 05:32:28 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ typedef struct s_wilddata
 }	t_wilddata;
 
 /*-----------HELPER-----------*/
-char	*generate_prompt(void);
+char	*generate_prompt(char **env);
 char	*ft_strjoin3(char *s1, char *s2, char *s3);
 int		is_whitespace(char c);
 char	*ft_strjoin_char(char *s, char c);
@@ -151,6 +151,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len);
 void	*ft_memset(void *b, int c, size_t len);
 void	print_error(char *cmd, char *msg);
 void	signal_handling(int sig);
+int		update_env_entry(char ***env, char *key, char *value, int append);
 /*-----------HELPER-----------*/
 
 /*-----------PARSING-----------*/
@@ -209,7 +210,8 @@ void	ft_exit(char **args);
 void	builting_export_only(char **env);
 int		builtin_export(char ***env, char **args);
 int		builtin_unset(char ***env, char **args);
-void	builti_cd(char **env, char **args);
+void	builti_cd(char ***env, char **args);
+int		builtin_env(char **env);
 /*-----------BUILTINS-----------*/
 
 #endif

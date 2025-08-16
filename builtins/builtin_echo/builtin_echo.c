@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 04:33:35 by tamounir          #+#    #+#             */
-/*   Updated: 2025/08/15 01:59:26 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/08/16 04:47:40 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,12 @@ int	builtin_echo(int argc, char **cmds)
 	i = skip_n_flags(argc, cmds, &new_line);
 	while (i < argc)
 	{
-		printf("%s", cmds[i]);
+		ft_putstr_fd(cmds[i], 1);
 		if (i < argc - 1)
-			printf(" ");
+			ft_putstr_fd(" ", 1);
 		i++;
 	}
 	if (new_line)
-		printf("\n");
+		ft_putstr_fd("\n", 1);
 	return (0);
 }

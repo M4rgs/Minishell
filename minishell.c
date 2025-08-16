@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 12:27:53 by tamounir          #+#    #+#             */
-/*   Updated: 2025/08/16 00:55:01 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/08/16 05:32:05 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,16 @@ void	init_struct(t_infos *infos, char **envp, t_tokenizer *tokenizer)
 	tokenizer->itispipe = 0;
 	tokenizer->infos = infos;
 	tokenizer->was_quoted = ft_calloc(MAX_ALLOC, sizeof(int));
-	infos->prom = generate_prompt();
+	infos->prom = generate_prompt(infos->envp_info->env);
 }
 
-char	*generate_prompt(void)
+char	*generate_prompt(char **env)
 {
 	char	*usr;
 	char	*usr_p;
 	char	*promt;
 
-	usr = getenv("USER");
+	usr = get_env_value(env, "USER");
 	if (!usr)
 		usr = "unknown";
 	usr_p = ft_strjoin(usr, "@");

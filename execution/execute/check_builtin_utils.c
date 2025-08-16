@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 00:17:36 by tamounir          #+#    #+#             */
-/*   Updated: 2025/08/15 01:59:26 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/08/16 05:10:01 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	handle_cd_builtin(char **args, char ***env, t_fds fds)
 	if (!(ft_strcmp(args[0], "cd") == 0 && !fds.is_pipe))
 		return (0);
 	check_redirectons(&args);
-	builti_cd(*env, args);
+	builti_cd(env, args);
 	restore_std_fds(fds.out, fds.in);
 	return (1);
 }
