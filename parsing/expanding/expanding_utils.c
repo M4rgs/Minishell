@@ -6,13 +6,13 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 03:21:40 by tamounir          #+#    #+#             */
-/*   Updated: 2025/08/15 01:59:26 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/08/16 02:40:27 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	remove_empty_args(char **args)
+void	remove_empty_args(char **args, t_tokenizer *tokenizer)
 {
 	int	i;
 	int	j;
@@ -21,7 +21,9 @@ void	remove_empty_args(char **args)
 	j = 0;
 	while (args[i])
 	{
-		if (args[i][0] != '\0')
+		if (args[i][0] == '\0' && tokenizer->was_quoted[i])
+			args[j++] = args[i];
+		else if (args[i][0] != '\0')
 			args[j++] = args[i];
 		i++;
 	}

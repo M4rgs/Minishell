@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 12:26:53 by tamounir          #+#    #+#             */
-/*   Updated: 2025/08/16 01:35:53 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/08/16 02:35:46 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ void	heredoc_child(int fd, char *delimiter, \
 	char **env, t_tokenizer *tokenizer);
 int		count_cmds(char **cmds, int heredoc_index);
 void	copy_cmds(char **cmds, char **new_cmds, int heredoc_index);
-void	remove_empty_args(char **args);
+void	remove_empty_args(char **args, t_tokenizer *tokenizer);
 void	trunc_expanded_spaces(char ***new_cmds, char *expanded, int *k);
 char	*handle_dollar(char *str, int *i, char **env, char *result);
 char	*exit_status_expanding(char *rzlt, int *i);

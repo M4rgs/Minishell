@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 03:22:43 by tamounir          #+#    #+#             */
-/*   Updated: 2025/08/15 01:59:26 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/08/16 02:34:51 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,5 +82,5 @@ void	expand_all_tokens(t_tokenizer *tokenizer, char **env, char *line)
 	new_cmds[k] = NULL;
 	wildcard_expand_tokens(&new_cmds, tokenizer);
 	tokenizer->commands = new_cmds;
-	remove_empty_args(tokenizer->commands);
+	remove_empty_args(tokenizer->commands, tokenizer);
 }
