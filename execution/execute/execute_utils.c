@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 16:43:59 by tamounir          #+#    #+#             */
-/*   Updated: 2025/08/15 03:20:04 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/08/16 01:15:30 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,25 @@ int	save_std_fds(int *saved_stdout, int *saved_stdin)
 	*saved_stdout = dup(STDOUT_FILENO);
 	*saved_stdin = dup(STDIN_FILENO);
 	if (*saved_stdout < 0 || *saved_stdin < 0)
+	{
+		if (*saved_stdout)
+			close(*saved_stdout);
+		if (*saved_stdin)
+			close(*saved_stdin);
 		return (1);
+	}
 	return (0);
 }
 
 void	restore_std_fds(int saved_stdout, int saved_stdin)
 {
-	dup2(saved_stdout, STDOUT_FILENO);
-	dup2(saved_stdin, STDIN_FILENO);
+	if (dup2(saved_stdout, STDOUT_FILENO) < 0)
+		return ;
+	if (dup2(saved_stdin, STDIN_FILENO) < 0)
+	{
+		close(saved_stdout);
+		return ;
+	}
 	close(saved_stdout);
 	close(saved_stdin);
 }

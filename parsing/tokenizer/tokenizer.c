@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 20:20:18 by tamounir          #+#    #+#             */
-/*   Updated: 2025/08/15 01:59:26 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/08/16 00:59:56 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,13 +90,6 @@ static int	tokenize_line(char *line, t_tokenizer *tokenizer)
 
 void	init_tokenizer(t_infos *infos, char *line, t_tokenizer *tokenizer)
 {
-	if (ft_strcmp(line, ".") == 0)
-	{
-		exit_status_value(127, 1);
-		ft_putstr_fd("bash: .: filename argument required\n.: \
-			usage: . filename [arguments]\n", 2);
-		return ;
-	}
 	if (has_heredoc(line, tokenizer) == 1)
 		tokenizer->is_heredoc = 1;
 	if (!tokenize_line(line, tokenizer))

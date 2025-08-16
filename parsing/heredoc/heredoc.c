@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 04:01:40 by tamounir          #+#    #+#             */
-/*   Updated: 2025/08/15 01:59:26 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/08/16 01:33:15 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,12 @@ static void	execute_heredoc_child(char **new_cmds, \
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
 		exit(1);
-	dup2(fd, STDIN_FILENO);
+	if (dup2(fd, STDIN_FILENO) == -1)
+	{
+		perror("dup2");
+		close(fd);
+		exit(1);
+	}
 	close(fd);
 	check_redirectons(&new_cmds);
 	execve(path, new_cmds, envp);
@@ -35,11 +40,12 @@ int	execute__heredoc(char **new_cmds, char *path, char **envp, char *file)
 	int		saved_stdout;
 	int		saved_stdin;
 
-	if (save_std_fds(&saved_stdout, &saved_stdin))
-		return (1);
-	if (check_builtings(new_cmds, &envp, 0))
+	if (save_std_fds(&saved_stdout, &saved_stdin) || \
+		check_builtings(new_cmds, &envp, 0))
 		return (1);
 	pid = fork();
+	if (pid == -1)
+		return (close(saved_stdin), close(saved_stdout), 1);
 	if (pid == 0)
 		execute_heredoc_child(new_cmds, path, envp, file);
 	else if (pid > 0)

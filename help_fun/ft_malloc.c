@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 12:12:13 by tamounir          #+#    #+#             */
-/*   Updated: 2025/08/15 01:59:26 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/08/16 01:01:51 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,15 @@ void	*ft_malloc(size_t size, int flag)
 	if (flag == 1)
 	{
 		if (counter >= MAX_ALLOC)
-			return (NULL);
+		{
+			ft_malloc(0, 0);
+			exit(1);
+		}
 		ptr = malloc(size);
 		if (!ptr)
 		{
 			ft_malloc(0, 0);
-			ft_putstr_fd("error malloc\n", 1);
+			ft_putstr_fd("error malloc\n", 2);
 			exit(1);
 		}
 		allocated[counter++] = ptr;
