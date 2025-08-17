@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 22:06:50 by tamounir          #+#    #+#             */
-/*   Updated: 2025/08/16 05:22:45 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/08/17 04:08:54 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ void	builti_cd(char ***env, char **args)
 		{
 			perror("Minishell: ");
 			exit_status_value(1, 1);
-			free(oldpwd);
 			return ;
 		}
 	}

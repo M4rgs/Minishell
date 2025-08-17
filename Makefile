@@ -2,7 +2,7 @@ NAME = minishell
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -I$(HOME)/readline/include -fsanitize=address -g3
+CFLAGS = -Wall -Wextra -Werror -I$(HOME)/readline/include #-fsanitize=address -g3
 
 LIBS = -L$(HOME)/readline/lib -lreadline -lncurses
 

@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 00:14:26 by tamounir          #+#    #+#             */
-/*   Updated: 2025/08/15 01:59:26 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/08/17 04:10:50 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,20 +54,6 @@ static char	*allo_words(const char *s, char c)
 	return (result);
 }
 
-static char	**ft_free(char **words, size_t index)
-{
-	size_t	i;
-
-	i = 0;
-	while (index > i)
-	{
-		free(words[i]);
-		i++;
-	}
-	free(words);
-	return (NULL);
-}
-
 char	**ft_split(const char *s, char c)
 {
 	char	**result;
@@ -86,8 +72,6 @@ char	**ft_split(const char *s, char c)
 		while (s[i] && s[i] == c)
 			i++;
 		result[j] = allo_words(&s[i], c);
-		if (!result[j])
-			return (ft_free(result, j));
 		while (s[i] && s[i] != c)
 			i++;
 	}
