@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 12:27:53 by tamounir          #+#    #+#             */
-/*   Updated: 2025/08/16 05:32:05 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/08/17 03:36:12 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,25 +56,6 @@ char	*generate_prompt(char **env)
 	usr_p = ft_strjoin(usr, "@");
 	promt = ft_strjoin(usr_p, WHITE "Minishell:~$ " RESET);
 	return (promt);
-}
-
-void	signal_handling(int sig)
-{
-	if (g_signal_flag == 1)
-	{
-		write(2, "\n", 1);
-		exit_status_value(1, 1);
-		g_signal_flag = 0;
-		return ;
-	}
-	if (sig == SIGINT)
-	{
-		exit_status_value(1, 1);
-		write(1, "\n", 1);
-		rl_replace_line("", 0);
-		rl_on_new_line();
-		rl_redisplay();
-	}
 }
 
 int	main(int ac, char **av, char **envp)

@@ -10,6 +10,7 @@ SRC = minishell.c \
 	  parsing/tokenizer/tokenizer.c \
 	  parsing/tokenizer/syntax_err.c \
 	  parsing/tokenizer/tokenizer_utils.c \
+	  parsing/signals/signals.c \
 	  parsing/quotes/quoted_unquoted.c \
 	  parsing/quotes/quoted_utils.c \
 	  parsing/heredoc/heredoc.c \
