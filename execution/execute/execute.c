@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 12:05:43 by tamounir          #+#    #+#             */
-/*   Updated: 2025/08/17 03:41:12 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/08/19 01:44:00 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ static int	start_execute(t_tokenizer *tokenizer, t_infos *infos)
 	if (check_direct_path(tokenizer, infos, &path))
 		return (1);
 	g_signal_flag = 2;
-	signal(SIGQUIT, signal_handling);
 	pid = fork();
 	if (pid == -1)
 		return (1);
@@ -68,7 +67,7 @@ static int	start_execute(t_tokenizer *tokenizer, t_infos *infos)
 		waitpid(pid, &status, 0);
 	if (WIFEXITED(status))
 		exit_status_value(WEXITSTATUS(status), 1);
-	return (signal(SIGQUIT, SIG_IGN), g_signal_flag = 0, 0);
+	return (g_signal_flag = 0, 0);
 }
 
 void	execute_commands(t_tokenizer *tokenizer, t_infos *infos)

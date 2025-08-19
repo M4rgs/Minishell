@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 18:37:48 by tamounir          #+#    #+#             */
-/*   Updated: 2025/08/15 01:59:26 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/08/19 01:44:02 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int	create_pipes_and_fork(t_pipe_tokenizer *pt, \
 			return (perror("pipe"), -1);
 	}
 	pt->i = -1;
+	g_signal_flag = 2;
 	while (++pt->i < pt->cmd_count)
 	{
 		pid = fork();
@@ -45,7 +46,7 @@ int	create_pipes_and_fork(t_pipe_tokenizer *pt, \
 	j = 0;
 	while (j < 2 * (pt->cmd_count - 1))
 		close(pt->pipefds[j++]);
-	return (0);
+	return (g_signal_flag = 0, 0);
 }
 
 void	execute_piped_commands(t_pipe_tokenizer *pt, \

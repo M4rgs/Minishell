@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 04:13:25 by tamounir          #+#    #+#             */
-/*   Updated: 2025/08/15 01:59:26 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/08/18 20:40:27 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	builtin_pwd(char **env)
 		if (dir)
 			printf("%s\n", dir);
 		else
-			printf("can't find pwd\n");
+			ft_putstr_fd("can't find pwd\n", 2);
 	}
 	free(dir);
 	return (0);

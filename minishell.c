@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 12:27:53 by tamounir          #+#    #+#             */
-/*   Updated: 2025/08/17 06:38:49 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/08/19 01:35:20 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,7 @@ int	main(int ac, char **av, char **envp)
 
 	(void)ac;
 	(void)av;
-	signal(SIGINT, signal_handling);
-	signal(SIGQUIT, SIG_IGN);
+	setup_signals();
 	init_struct(&infos, envp, &tokenizer);
 	while (1)
 	{

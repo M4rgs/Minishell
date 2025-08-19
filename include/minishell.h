@@ -6,7 +6,7 @@
 /*   By: tamounir <tamounir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 12:26:53 by tamounir          #+#    #+#             */
-/*   Updated: 2025/08/16 22:15:13 by tamounir         ###   ########.fr       */
+/*   Updated: 2025/08/19 01:53:18 by tamounir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <readline/history.h>
 # include <dirent.h>
 # include <sys/stat.h>
+# include <termios.h>
 # include <limits.h>
 
 # define WHITE "\001\033[1;37m\002"
@@ -150,7 +151,6 @@ char	**ft_split(const char *s, char c);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 void	*ft_memset(void *b, int c, size_t len);
 void	print_error(char *cmd, char *msg);
-void	signal_handling(int sig);
 int		update_env_entry(char ***env, char *key, char *value, int append);
 /*-----------HELPER-----------*/
 
@@ -213,5 +213,11 @@ int		builtin_unset(char ***env, char **args);
 void	builti_cd(char ***env, char **args);
 int		builtin_env(char **env);
 /*-----------BUILTINS-----------*/
+
+/*-----------SIGNALS-----------*/
+void	signal_handling(int sig);
+void	setup_signals(void);
+void	disable_echoctl(void);
+/*-----------SIGNALS-----------*/
 
 #endif

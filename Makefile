@@ -2,7 +2,7 @@ NAME = minishell
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -I$(HOME)/readline/include #-fsanitize=address -g3
+CFLAGS = -Wall -Wextra -Werror -I$(HOME)/readline/include
 
 LIBS = -L$(HOME)/readline/lib -lreadline -lncurses
 
@@ -11,6 +11,7 @@ SRC = minishell.c \
 	  parsing/tokenizer/syntax_err.c \
 	  parsing/tokenizer/tokenizer_utils.c \
 	  parsing/signals/signals.c \
+	  parsing/signals/signals_utils.c \
 	  parsing/quotes/quoted_unquoted.c \
 	  parsing/quotes/quoted_utils.c \
 	  parsing/heredoc/heredoc.c \
