@@ -59,3 +59,38 @@ git clone https://github.com/M4rgs/minishell.git
 cd minishell
 make
 ./minishell
+```
+
+---
+
+## 📚 Example Session
+
+```sh
+$ echo Hello World
+Hello World
+
+$ export USERNAME=Taha
+$ echo $USERNAME
+Taha
+
+$ ls | grep ".c" >> sources_list.txt
+
+$ cat sources_list.txt
+main.c
+parser.c
+utils.c
+```
+---
+
+## 🎯 Goal
+
+The goal of Minishell is to understand:
+- Process creation and execution
+- How shells parse and interpret commands
+- File descriptors and pipeline communication
+- Signal handling in interactive programs
+
+---
+
+###👤 Author
+  TAHA MOUNIR
