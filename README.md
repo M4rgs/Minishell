@@ -92,5 +92,6 @@ The goal of Minishell is to understand:
 
 ---
 
-###👤 Author
+##👤 Author
   TAHA MOUNIR
+---
